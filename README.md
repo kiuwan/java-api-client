@@ -17,4 +17,4 @@ Supported actions are:
   
 Source code includes examples that shows you how to execute each supported action.
 
-  - <a href="kiuwan/java-api-client/blob/master/src/main/java/com/kiuwan/client/examples/ListApplications.java">com.kiuwan.client.examples.ListApplications.java</a>
+  - <a href="src/main/java/com/kiuwan/client/examples/ListApplications.java">com.kiuwan.client.examples.ListApplications.java</a>
