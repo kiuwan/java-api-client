@@ -70,16 +70,7 @@ public class KiuwanRestApiClient {
 		return getApplicationResults(null, appName);
 	}
 	
-	public ApplicationResults getApplicationResultsByAnalysisCode(String analysisCode) throws KiuwanClientException {
-
-		if (analysisCode == null || analysisCode.isEmpty()) {
-			throw new KiuwanClientException("Invalid analysis code");
-		}
-		
-		String path = "/apps/analysis" + analysisCode;
-		return requestAndBuildApplicationResults(path);
-	}
-
+	
 	public ApplicationResults getApplicationResults(String publicAccount, String appName) throws KiuwanClientException {
 
 		if (appName == null || appName.isEmpty()) {
@@ -92,7 +83,17 @@ public class KiuwanRestApiClient {
 		}
 		return requestAndBuildApplicationResults(path);
 	}
+	
+	public ApplicationResults getApplicationResultsByAnalysisCode(String analysisCode) throws KiuwanClientException {
 
+		if (analysisCode == null || analysisCode.isEmpty()) {
+			throw new KiuwanClientException("Invalid analysis code");
+		}
+		
+		String path = "/apps/analysis" + analysisCode;
+		return requestAndBuildApplicationResults(path);
+	}
+	
 	public ApplicationResults requestAndBuildApplicationResults(String path) throws KiuwanClientException {
 		ClientResponse response = get(path);
 		

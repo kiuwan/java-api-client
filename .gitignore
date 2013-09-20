@@ -2,3 +2,10 @@
 /target
 /.classpath
 /.project
+/target
+/release.properties
+/pom.xml.releaseBackup
+/.classpath
+/.project
+/.settings
+/.gitignore
