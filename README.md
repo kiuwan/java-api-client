@@ -1,7 +1,16 @@
 java-api-client
 ===============
 
-Kiuwan Java client for REST API
+Kiuwan Java client for REST API.
+
+Maven configuration:
+
+	<dependency>
+		<groupId>com.kiuwan</groupId>
+		<artifactId>java-api-client</artifactId>
+		<version>0.0.1</version>
+	</dependency>
+	
 
 Supported actions are:
 
