@@ -8,7 +8,7 @@ Maven configuration:
 	<dependency>
 		<groupId>com.kiuwan</groupId>
 		<artifactId>java-api-client</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</dependency>
 	
 
@@ -18,6 +18,7 @@ Supported actions are:
   - List applications from public account.
   - Get last analysis results from your application.
   - Get last analysis results from a public applicaion.
+  - Get last analysis results from with analysis code.
   - Get all defects from your application.
   - Get all defects from a public application.
   - Get files (with metric values and defects) from your application.

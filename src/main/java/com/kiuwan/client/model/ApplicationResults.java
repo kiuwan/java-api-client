@@ -12,6 +12,8 @@ public class ApplicationResults {
 	protected String label;
 	protected Date date;
 	protected String encoding;
+	protected String analysisCode;
+	protected String analysisStatus;
 	List<Language> languages;
 	String qualityModel;
 	String orderedBy;
@@ -51,6 +53,18 @@ public class ApplicationResults {
 	}
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
+	}
+	public String getAnalysisCode() {
+		return analysisCode;
+	}
+	public void setAnalysisCode(String analysisCode) {
+		this.analysisCode = analysisCode;
+	}
+	public String getAnalysisStatus() {
+		return analysisStatus;
+	}
+	public void setAnalysisStatus(String analysisStatus) {
+		this.analysisStatus = analysisStatus;
 	}
 	public List<Language> getLanguages() {
 		return languages;
@@ -104,7 +118,8 @@ public class ApplicationResults {
 	public String toString() {
 		return "ApplicationResults [name=" + name + ", description="
 				+ description + ", label=" + label + ", date=" + date
-				+ ", encoding=" + encoding + ", languages=" + languages
+				+ ", encoding=" + encoding + ", analysisCode=" + analysisCode
+				+ ", analysisStatus=" + analysisStatus + ", languages=" + languages
 				+ ", qualityModel=" + qualityModel + ", orderedBy=" + orderedBy
 				+ ", riskIndex=" + riskIndex + ", qualityIndicator="
 				+ qualityIndicator + ", effortToTarget=" + effortToTarget
