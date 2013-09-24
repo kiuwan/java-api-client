@@ -16,9 +16,9 @@ Supported actions are:
 
   - List your applications.
   - List applications from public account.
+  - Get analysis results by analysis code.
   - Get last analysis results from your application.
   - Get last analysis results from a public applicaion.
-  - Get last analysis results from with analysis code.
   - Get all defects from your application.
   - Get all defects from a public application.
   - Get files (with metric values and defects) from your application.
