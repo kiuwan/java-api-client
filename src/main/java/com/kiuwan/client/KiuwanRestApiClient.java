@@ -90,7 +90,7 @@ public class KiuwanRestApiClient {
 			throw new KiuwanClientException("Invalid analysis code");
 		}
 		
-		String path = "/apps/analysis" + analysisCode;
+		String path = "/apps/analysis/" + analysisCode;
 		return requestAndBuildApplicationResults(path);
 	}
 	
