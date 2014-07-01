@@ -18,8 +18,8 @@ public class ApplicationDefects {
 	protected Long count;
 	protected Long page;
 	protected List<Defect> defects;
-	
-	
+	protected String analysisCode;
+	protected String analysisStatus;
 	
 	public String getName() {
 		return name;
@@ -89,6 +89,30 @@ public class ApplicationDefects {
 	}
 	public void setDefects(List<Defect> defects) {
 		this.defects = defects;
+	}
+	/**
+	 * @return the analysisCode
+	 */
+	public String getAnalysisCode() {
+		return analysisCode;
+	}
+	/**
+	 * @param analysisCode the analysisCode to set
+	 */
+	public void setAnalysisCode(String analysisCode) {
+		this.analysisCode = analysisCode;
+	}
+	/**
+	 * @return the analysisStatus
+	 */
+	public String getAnalysisStatus() {
+		return analysisStatus;
+	}
+	/**
+	 * @param analysisStatus the analysisStatus to set
+	 */
+	public void setAnalysisStatus(String analysisStatus) {
+		this.analysisStatus = analysisStatus;
 	}
 	@Override
 	public String toString() {

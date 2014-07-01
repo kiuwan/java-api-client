@@ -13,6 +13,7 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.codehaus.jackson.map.DeserializationConfig;
 
 import com.kiuwan.client.model.Application;
 import com.kiuwan.client.model.ApplicationDefects;
@@ -35,6 +36,7 @@ public class KiuwanRestApiClient {
 
 	
 	public KiuwanRestApiClient(String user, String password) {
+		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		connexion = ClientHelper.createClient().resource(REST_API_BASE_URL);
 		//connexion.addFilter(new LoggingFilter());
 		connexion.addFilter(new HTTPBasicAuthFilter(user, password));
