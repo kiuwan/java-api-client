@@ -13,6 +13,7 @@ public class ApplicationResults {
 	protected Date date;
 	protected String encoding;
 	protected String analysisCode;
+	protected String analysisURL;
 	protected String analysisStatus;
 	List<Language> languages;
 	String qualityModel;
@@ -59,6 +60,12 @@ public class ApplicationResults {
 	}
 	public void setAnalysisCode(String analysisCode) {
 		this.analysisCode = analysisCode;
+	}
+	public String getAnalysisURL() {
+		return analysisURL;
+	}
+	public void setAnalysisURL(String analysisURL) {
+		this.analysisURL = analysisURL;
 	}
 	public String getAnalysisStatus() {
 		return analysisStatus;
@@ -117,7 +124,7 @@ public class ApplicationResults {
 	@Override
 	public String toString() {
 		return "ApplicationResults [name=" + name + ", description="
-				+ description + ", label=" + label + ", date=" + date
+				+ description + ", URL=" + analysisURL + ", label=" + label + ", date=" + date
 				+ ", encoding=" + encoding + ", analysisCode=" + analysisCode
 				+ ", analysisStatus=" + analysisStatus + ", languages=" + languages
 				+ ", qualityModel=" + qualityModel + ", orderedBy=" + orderedBy

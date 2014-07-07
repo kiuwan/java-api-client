@@ -15,6 +15,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.codehaus.jackson.map.DeserializationConfig;
 
+import com.kiuwan.client.model.AnalysisComparation;
 import com.kiuwan.client.model.Application;
 import com.kiuwan.client.model.ApplicationDefects;
 import com.kiuwan.client.model.ApplicationFiles;
@@ -34,10 +35,14 @@ public class KiuwanRestApiClient {
 	// Reusable Jackson Mapper
     protected static final ObjectMapper mapper = new ObjectMapper();
 
+    
+    public KiuwanRestApiClient(String user, String password) {
+		this(user, password, REST_API_BASE_URL);
+	}
 	
-	public KiuwanRestApiClient(String user, String password) {
+	public KiuwanRestApiClient(String user, String password, String restApiBaseUrl) {
 		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		connexion = ClientHelper.createClient().resource(REST_API_BASE_URL);
+		connexion = ClientHelper.createClient().resource(restApiBaseUrl);
 		//connexion.addFilter(new LoggingFilter());
 		connexion.addFilter(new HTTPBasicAuthFilter(user, password));
 	}
@@ -46,16 +51,11 @@ public class KiuwanRestApiClient {
 		connexion.addFilter(new LoggingFilter());
 	}
 	
-	public List<Application> getApplications() throws KiuwanClientException {
-		return getApplications(null);
-	}
 	
-	public List<Application> getApplications(String publicAccount) throws KiuwanClientException {
+	public List<Application> getApplications() throws KiuwanClientException {
 
 		String path = "/apps/list";
-		if (publicAccount != null && !publicAccount.isEmpty()) {
-			path = "/" + publicAccount + path;
-		}
+
 		ClientResponse response = get(path);
 		
 		checkStatus(response, 200);
@@ -68,21 +68,15 @@ public class KiuwanRestApiClient {
         }
 	}
 	
+	
 	public ApplicationResults getApplicationResults(String appName) throws KiuwanClientException {
-		return getApplicationResults(null, appName);
-	}
-	
-	
-	public ApplicationResults getApplicationResults(String publicAccount, String appName) throws KiuwanClientException {
 
 		if (appName == null || appName.isEmpty()) {
 			throw new KiuwanClientException("Invalid application name");
 		}
 		
 		String path = "/apps/" + appName;
-		if (publicAccount != null && !publicAccount.isEmpty()) {
-			path = "/" + publicAccount + path;
-		}
+
 		return requestAndBuildApplicationResults(path);
 	}
 	
@@ -109,12 +103,21 @@ public class KiuwanRestApiClient {
         }
 	}
 	
-	public List<File> getAllFiles(String appName) throws KiuwanClientException { 
-		return getAllFiles(null, appName);
+	public AnalysisComparation requestAndBuildAnalysisComparation(String path) throws KiuwanClientException {
+		ClientResponse response = get(path);
+		
+		checkStatus(response, 200);
+        InputStream is = response.getEntityInputStream();
+        InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
+        try {
+            return readAnalysisComparation(isr);
+        } catch (Exception e) {
+            throw new KiuwanClientException(e);
+        }
 	}
 	
 	
-	public List<File> getAllFiles(String publicAccount, String appName) throws KiuwanClientException {
+	public List<File> getAllFiles(String appName) throws KiuwanClientException {
 		
 		if (appName == null || appName.isEmpty()) {
 			throw new KiuwanClientException("Invalid application name");
@@ -126,7 +129,7 @@ public class KiuwanRestApiClient {
 		int count = 0;
 		do {
 			
-			ApplicationFiles appFiles = getApplicationFilesPage(publicAccount, appName, page++, 500);
+			ApplicationFiles appFiles = getApplicationFilesPage(appName, page++, 500);
 			if (appFiles == null) {
 				throw new KiuwanClientException("Unkonwn error");
 			}
@@ -139,12 +142,34 @@ public class KiuwanRestApiClient {
 		return files;
 	}
 	
-	public ApplicationFiles getApplicationFilesPage(String appName, Integer pageNumber, Integer defectsPerPage) throws KiuwanClientException {
-		return getApplicationFilesPage(null, appName, pageNumber, defectsPerPage);
+	
+	public List<File> getAllAnalysisFiles(String analysisCode) throws KiuwanClientException {
+		
+		if (analysisCode == null || analysisCode.isEmpty()) {
+			throw new KiuwanClientException("Invalid analysis code");
+		}
+		
+		List<File> files = new ArrayList<File>();
+		
+		int page = 1;
+		int count = 0;
+		do {
+			
+			ApplicationFiles appFiles = getAnalysisFilesPage(analysisCode, page++, 500);
+			if (appFiles == null) {
+				throw new KiuwanClientException("Unkonwn error");
+			}
+			
+			count = appFiles.getFiles().size();
+			files.addAll(appFiles.getFiles());
+			
+		} while (count == 500);
+		
+		return files;
 	}
 
 	
-	private ApplicationFiles getApplicationFilesPage(String publicAccount, String appName, Integer pageNumber, Integer defectsPerPage) throws KiuwanClientException {
+	private ApplicationFiles getApplicationFilesPage(String appName, Integer pageNumber, Integer defectsPerPage) throws KiuwanClientException {
 		
 		if (appName == null || appName.isEmpty()) {
 			throw new KiuwanClientException("Invalid application name");
@@ -155,9 +180,29 @@ public class KiuwanRestApiClient {
 		queryParams.add("page", pageNumber.toString());
 		queryParams.add("count", defectsPerPage.toString());
 
-		if (publicAccount != null && !publicAccount.isEmpty()) {
-			path = "/" + publicAccount + path;
+		ClientResponse response = get(path, queryParams);
+		
+		checkStatus(response, 200);
+        InputStream is = response.getEntityInputStream();
+        InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
+        try {
+            return readApplicationFiles(isr);
+        } catch (Exception e) {
+            throw new KiuwanClientException(e);
+        }
+	}
+	
+	private ApplicationFiles getAnalysisFilesPage(String analysisCode, Integer pageNumber, Integer defectsPerPage) throws KiuwanClientException {
+		
+		if (analysisCode == null || analysisCode.isEmpty()) {
+			throw new KiuwanClientException("Invalid analysis code");
 		}
+
+		String path = "/apps/analysis/" + analysisCode + "/files";
+		MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
+		queryParams.add("page", pageNumber.toString());
+		queryParams.add("count", defectsPerPage.toString());
+
 		ClientResponse response = get(path, queryParams);
 		
 		checkStatus(response, 200);
@@ -176,12 +221,8 @@ public class KiuwanRestApiClient {
 	}
 	
 
-	public List<Defect> getAllDefects(String appName) throws KiuwanClientException { 
-		return getAllDefects(null, appName);
-	}
 	
-	
-	public List<Defect> getAllDefects(String publicAccount, String appName) throws KiuwanClientException {
+	public List<Defect> getAllDefects(String appName) throws KiuwanClientException {
 		
 		if (appName == null || appName.isEmpty()) {
 			throw new KiuwanClientException("Invalid application name");
@@ -193,7 +234,7 @@ public class KiuwanRestApiClient {
 		int count = 0;
 		do {
 			
-			ApplicationDefects appDefects = getApplicationDefectsPage(publicAccount, appName, page++, 500);
+			ApplicationDefects appDefects = getApplicationDefectsPage(appName, page++, 500);
 			if (appDefects == null) {
 				throw new KiuwanClientException("Unkonwn error");
 			}
@@ -206,12 +247,32 @@ public class KiuwanRestApiClient {
 		return defects;
 	}
 	
-	public ApplicationDefects getApplicationDefectsPage(String appName, Integer pageNumber, Integer defectsPerPage) throws KiuwanClientException {
-		return getApplicationDefectsPage(null, appName, pageNumber, defectsPerPage);
+	public List<Defect> getAllAnalysisDefects(String analysisCode) throws KiuwanClientException {
+		
+		if (analysisCode == null || analysisCode.isEmpty()) {
+			throw new KiuwanClientException("Invalid analysis code");
+		}
+		
+		List<Defect> defects = new ArrayList<Defect>();
+		
+		int page = 1;
+		int count = 0;
+		do {
+			
+			ApplicationDefects appDefects = getAnalysisDefectsPage(analysisCode, page++, 500);
+			if (appDefects == null || appDefects.getDefects() == null) {
+				throw new KiuwanClientException("Unkonwn error");
+			}
+			
+			count = appDefects.getDefects().size();
+			defects.addAll(appDefects.getDefects());
+			
+		} while (count == 500);
+		
+		return defects;
 	}
-
 	
-	private ApplicationDefects getApplicationDefectsPage(String publicAccount, String appName, Integer pageNumber, Integer defectsPerPage) throws KiuwanClientException {
+	private ApplicationDefects getApplicationDefectsPage(String appName, Integer pageNumber, Integer defectsPerPage) throws KiuwanClientException {
 		
 		if (appName == null || appName.isEmpty()) {
 			throw new KiuwanClientException("Invalid application name");
@@ -222,9 +283,29 @@ public class KiuwanRestApiClient {
 		queryParams.add("page", pageNumber.toString());
 		queryParams.add("count", defectsPerPage.toString());
 
-		if (publicAccount != null && !publicAccount.isEmpty()) {
-			path = "/" + publicAccount + path;
+		ClientResponse response = get(path, queryParams);
+		
+		checkStatus(response, 200);
+        InputStream is = response.getEntityInputStream();
+        InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
+        try {
+            return readApplicationDefects(isr);
+        } catch (Exception e) {
+            throw new KiuwanClientException(e);
+        }
+	}
+	
+	private ApplicationDefects getAnalysisDefectsPage(String analysisCode, Integer pageNumber, Integer defectsPerPage) throws KiuwanClientException {
+		
+		if (analysisCode == null || analysisCode.isEmpty()) {
+			throw new KiuwanClientException("Invalid analysis code");
 		}
+		
+		String path = "/apps/analysis/" + analysisCode + "/defects";
+		MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
+		queryParams.add("page", pageNumber.toString());
+		queryParams.add("count", defectsPerPage.toString());
+
 		ClientResponse response = get(path, queryParams);
 		
 		checkStatus(response, 200);
@@ -260,6 +341,11 @@ public class KiuwanRestApiClient {
 		return mapper.readValue(isr, new TypeReference<ApplicationResults>() {
         });
 	}
+	
+	private AnalysisComparation readAnalysisComparation(InputStreamReader isr) throws JsonParseException, JsonMappingException, IOException {
+		return mapper.readValue(isr, new TypeReference<AnalysisComparation>() {
+        });
+	}
 
 	
 	protected void checkStatus(ClientResponse response, int checkStatus) throws KiuwanClientException {
@@ -267,6 +353,119 @@ public class KiuwanRestApiClient {
         if (status != checkStatus)
             throw KiuwanClientException.createResponseStatusException(status);
     }
+
+	public AnalysisComparation getAnalysisComparation(String mainAnalysisCode, String previousAnalysisCode) throws KiuwanClientException {
+		
+		if (mainAnalysisCode == null || mainAnalysisCode.isEmpty()) {
+			throw new KiuwanClientException("Invalid mainAnalysisCode");
+		}
+		
+		if (previousAnalysisCode == null || previousAnalysisCode.isEmpty()) {
+			throw new KiuwanClientException("Invalid previousAnalysisCode");
+		}
+		
+		String path = "/apps/analysis/" + mainAnalysisCode + "/defects/compare/" + previousAnalysisCode;
+		
+		
+		return requestAndBuildAnalysisComparation(path);
+	}
 	
 	
+	public List<Defect> getAllNewDefects(String mainAnalysisCode, String previousAnalysisCode) throws KiuwanClientException {
+		
+		List<Defect> defects = new ArrayList<Defect>();
+		
+		int page = 1;
+		int count = 0;
+		do {
+			
+			AnalysisComparation analysisComparation = getNewDefectsPage(mainAnalysisCode, previousAnalysisCode, page++, 500);
+			if (analysisComparation == null) {
+				throw new KiuwanClientException("Unkonwn error");
+			}
+			
+			count = analysisComparation.getNewDefects().size();
+			defects.addAll(analysisComparation.getNewDefects());
+			
+		} while (count == 500);
+		
+		return defects;
+	}
+	
+	
+	private AnalysisComparation getNewDefectsPage(String mainAnalysisCode, String previousAnalysisCode, Integer pageNumber, Integer defectsPerPage) throws KiuwanClientException {
+		
+		if (mainAnalysisCode == null || mainAnalysisCode.isEmpty()) {
+			throw new KiuwanClientException("Invalid mainAnalysisCode");
+		}
+		
+		if (previousAnalysisCode == null || previousAnalysisCode.isEmpty()) {
+			throw new KiuwanClientException("Invalid previousAnalysisCode");
+		}
+		
+		String path = "/apps/analysis/" + mainAnalysisCode + "/defects/compare/" + previousAnalysisCode + "/new";
+		MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
+		queryParams.add("page", pageNumber.toString());
+		queryParams.add("count", defectsPerPage.toString());
+
+		ClientResponse response = get(path, queryParams);
+		
+		checkStatus(response, 200);
+        InputStream is = response.getEntityInputStream();
+        InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
+        try {
+            return readAnalysisComparation(isr);
+        } catch (Exception e) {
+            throw new KiuwanClientException(e);
+        }
+	}
+	
+	public List<Defect> getAllRemovedDefects(String mainAnalysisCode, String previousAnalysisCode) throws KiuwanClientException {
+		
+		List<Defect> defects = new ArrayList<Defect>();
+		
+		int page = 1;
+		int count = 0;
+		do {
+			
+			AnalysisComparation analysisComparation = getRemovedDefectsPage(mainAnalysisCode, previousAnalysisCode, page++, 500);
+			if (analysisComparation == null) {
+				throw new KiuwanClientException("Unkonwn error");
+			}
+			
+			count = analysisComparation.getRemovedDefects().size();
+			defects.addAll(analysisComparation.getRemovedDefects());
+			
+		} while (count == 500);
+		
+		return defects;
+	}
+	
+	
+	private AnalysisComparation getRemovedDefectsPage(String mainAnalysisCode, String previousAnalysisCode, Integer pageNumber, Integer defectsPerPage) throws KiuwanClientException {
+		
+		if (mainAnalysisCode == null || mainAnalysisCode.isEmpty()) {
+			throw new KiuwanClientException("Invalid mainAnalysisCode");
+		}
+		
+		if (previousAnalysisCode == null || previousAnalysisCode.isEmpty()) {
+			throw new KiuwanClientException("Invalid previousAnalysisCode");
+		}
+		
+		String path = "/apps/analysis/" + mainAnalysisCode + "/defects/compare/" + previousAnalysisCode + "/removed";
+		MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
+		queryParams.add("page", pageNumber.toString());
+		queryParams.add("count", defectsPerPage.toString());
+
+		ClientResponse response = get(path, queryParams);
+		
+		checkStatus(response, 200);
+        InputStream is = response.getEntityInputStream();
+        InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
+        try {
+            return readAnalysisComparation(isr);
+        } catch (Exception e) {
+            throw new KiuwanClientException(e);
+        }
+	}
 }
