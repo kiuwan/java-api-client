@@ -24,7 +24,7 @@ public class ApplicationFiles {
 		String appName = args[2];
 		
 		KiuwanRestApiClient client = new KiuwanRestApiClient(username, password);
-		client.activateLog();
+//		client.activateLog();
 
 		try {
 			List<File> files = client.getAllFiles(appName);

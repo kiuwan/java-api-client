@@ -24,7 +24,7 @@ public class AnalysisFiles {
 		String analysisCode = args[2];
 		
 		KiuwanRestApiClient client = new KiuwanRestApiClient(username, password);
-		client.activateLog();
+//		client.activateLog();
 
 		try {
 			List<File> files = client.getAllAnalysisFiles(analysisCode);
