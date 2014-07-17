@@ -1,48 +1,49 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.kiuwan</groupId>
-  <artifactId>java-api-client</artifactId>
-  <version>0.0.3-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <name>kiuwan-api-client</name>
-  <description>Java client for Kiuwan's rest api</description>
-  <url>https://kiuwan.com/docs/display/K5/REST+API</url>
-  
-  <licenses>
-  	<license>
-  		<name>MIT License</name>
-		<url>http://www.opensource.org/licenses/mit-license.php</url>
-		<distribution>repo</distribution>
-  	</license>
-  </licenses>
-  
-  <developers>
-	<developer>
-	      <id>jtejela</id>
-	      <name>Juan Pablo Tejela Alonso</name>
-	      <email>juanpablo.tejela@optimyth.com</email>
-	      <organization>Optimyth</organization>
-	      <organizationUrl>http://www.optimyth.com</organizationUrl>
-	</developer>
-  </developers>
-  
-  
-  <scm>
-	<connection>scm:git:git://github.com/kiuwan/java-api-client.git</connection>
-	<developerConnection>scm:git:git@github.com:kiuwan/java-api-client.git</developerConnection>
-	<url>https://github.com/kiuwan/java-api-client.git</url>
-  </scm>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.kiuwan</groupId>
+	<artifactId>java-api-client</artifactId>
+	<version>0.0.4-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>kiuwan-api-client</name>
+	<description>Java client for Kiuwan's rest api</description>
+	<url>https://kiuwan.com/docs/display/K5/REST+API</url>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-client</artifactId>
-      <version>1.9</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-mapper-asl</artifactId>
-      <version>1.9.3</version>
-    </dependency>
-  </dependencies>
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>jtejela</id>
+			<name>Juan Pablo Tejela Alonso</name>
+			<email>juanpablo.tejela@optimyth.com</email>
+			<organization>Optimyth</organization>
+			<organizationUrl>http://www.optimyth.com</organizationUrl>
+		</developer>
+	</developers>
+
+
+	<scm>
+		<connection>scm:git:git://github.com/kiuwan/java-api-client.git</connection>
+		<developerConnection>scm:git:git@github.com:kiuwan/java-api-client.git</developerConnection>
+		<url>https://github.com/kiuwan/java-api-client.git</url>
+	</scm>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.3</version>
+		</dependency>
+	</dependencies>
 </project>
