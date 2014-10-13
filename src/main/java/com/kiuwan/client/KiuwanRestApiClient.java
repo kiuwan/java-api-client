@@ -31,24 +31,37 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 public class KiuwanRestApiClient {
 	
 	protected static final String REST_API_BASE_URL = "https://api.kiuwan.com";
-	protected WebResource connexion;
+	protected WebResource connection;
 	// Reusable Jackson Mapper
     protected static final ObjectMapper mapper = new ObjectMapper();
 
     
     public KiuwanRestApiClient(String user, String password) {
-		this(user, password, REST_API_BASE_URL);
+		initializeConnection(user, password, REST_API_BASE_URL);
 	}
 	
 	public KiuwanRestApiClient(String user, String password, String restApiBaseUrl) {
-		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		connexion = ClientHelper.createClient().resource(restApiBaseUrl);
-		//connexion.addFilter(new LoggingFilter());
-		connexion.addFilter(new HTTPBasicAuthFilter(user, password));
+		initializeConnection(user, password, restApiBaseUrl);
 	}
-	
+
+    public KiuwanRestApiClient(String user, String password, String proxyHost, String proxyPort) {
+    	System.setProperty("https.proxyHost", proxyHost);
+    	System.setProperty("https.proxyPort", proxyPort);
+
+    	initializeConnection(user, password, REST_API_BASE_URL);
+	}
+
+    public KiuwanRestApiClient(String user, String password, String proxyHost, String proxyPort, String proxyUser, String proxyPassword) {
+    	System.setProperty("https.proxyHost", proxyHost);
+    	System.setProperty("https.proxyPort", proxyPort);
+    	System.setProperty("https.proxyUser", proxyUser);
+		System.setProperty("https.proxyPassword", proxyPassword);
+		
+    	initializeConnection(user, password, REST_API_BASE_URL);
+	}
+
 	public void activateLog() {
-		connexion.addFilter(new LoggingFilter());
+		connection.addFilter(new LoggingFilter());
 	}
 	
 	
@@ -324,11 +337,11 @@ public class KiuwanRestApiClient {
 	}
 
 	protected ClientResponse get(String resource) {
-        return connexion.path(resource).get(ClientResponse.class);
+        return connection.path(resource).get(ClientResponse.class);
     }
 	
 	protected ClientResponse get(String resource, MultivaluedMap<String, String> queryParams) {
-        return connexion.path(resource).queryParams(queryParams).get(ClientResponse.class);
+        return connection.path(resource).queryParams(queryParams).get(ClientResponse.class);
     }
 	
 	
@@ -441,6 +454,18 @@ public class KiuwanRestApiClient {
 		return defects;
 	}
 	
+	/**
+	 * Initializes the connection.
+	 * @param user The user name in Kiuwan.
+	 * @param password The password in Kiuwan.
+	 * @param restApiBaseUrl Base URL for REST-API.
+	 */
+	private void initializeConnection(String user, String password, String restApiBaseUrl) {
+		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		connection = ClientHelper.createClient().resource(restApiBaseUrl);
+		//connection.addFilter(new LoggingFilter());
+		connection.addFilter(new HTTPBasicAuthFilter(user, password));
+	}
 	
 	private AnalysisComparation getRemovedDefectsPage(String mainAnalysisCode, String previousAnalysisCode, Integer pageNumber, Integer defectsPerPage) throws KiuwanClientException {
 		
