@@ -1,12 +1,13 @@
 package com.kiuwan.client.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MetricValue {
 
 	protected String name;
 	protected Double value;
-	protected List<MetricValue> children;
+	protected List<MetricValue> children = new ArrayList<MetricValue>();
 	
 	
 	public String getName() {

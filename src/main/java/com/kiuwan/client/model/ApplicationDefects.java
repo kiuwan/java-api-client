@@ -1,5 +1,6 @@
 package com.kiuwan.client.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class ApplicationDefects {
 	protected Long defectsCount;
 	protected Long count;
 	protected Long page;
-	protected List<Defect> defects;
+	protected List<Defect> defects = new ArrayList<Defect>();
 	protected String analysisCode;
 	protected String analysisStatus;
 	

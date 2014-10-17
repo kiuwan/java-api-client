@@ -1,5 +1,6 @@
 package com.kiuwan.client.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -17,8 +18,8 @@ public class AnalysisComparation {
 	
 	protected Long count;
 	protected Long page;
-	private List<Defect> newDefects;
-	private List<Defect> removedDefects;
+	private List<Defect> newDefects = new ArrayList<Defect>();
+	private List<Defect> removedDefects = new ArrayList<Defect>();
 	
 	
 	

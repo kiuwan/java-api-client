@@ -1,5 +1,6 @@
 package com.kiuwan.client.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,13 +16,13 @@ public class ApplicationResults {
 	protected String analysisCode;
 	protected String analysisURL;
 	protected String analysisStatus;
-	List<Language> languages;
+	List<Language> languages = new ArrayList<Language>();
 	String qualityModel;
 	String orderedBy;
 	MetricValue riskIndex;
 	MetricValue qualityIndicator;
 	MetricValue effortToTarget;
-	List<MetricValue> mainMetrics;
+	List<MetricValue> mainMetrics = new ArrayList<MetricValue>();
 	
 	
 	

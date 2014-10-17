@@ -1,5 +1,6 @@
 package com.kiuwan.client.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -8,9 +9,9 @@ public class File {
 
 	protected String name;
 	protected Long metricsCount;
-	protected List<MetricValue> metrics;
+	protected List<MetricValue> metrics = new ArrayList<MetricValue>();
 	protected Long defectsCount;
-	protected List<Defect> defects;
+	protected List<Defect> defects = new ArrayList<Defect>();
 	
 	
 	public String getName() {
