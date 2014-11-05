@@ -3,6 +3,8 @@ package com.kiuwan.client;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +53,17 @@ public class KiuwanRestApiClient {
     	initializeConnection(user, password, REST_API_BASE_URL);
 	}
 
-    public KiuwanRestApiClient(String user, String password, String proxyHost, String proxyPort, String proxyUser, String proxyPassword) {
+    public KiuwanRestApiClient(String user, String password, String proxyHost, String proxyPort, final String proxyUser, final String proxyPassword) {
     	System.setProperty("https.proxyHost", proxyHost);
     	System.setProperty("https.proxyPort", proxyPort);
-    	System.setProperty("https.proxyUser", proxyUser);
-		System.setProperty("https.proxyPassword", proxyPassword);
+		
+		Authenticator.setDefault(
+		   new Authenticator() {
+		      public PasswordAuthentication getPasswordAuthentication() {
+		         return new PasswordAuthentication(proxyUser, proxyPassword.toCharArray());
+		      }
+		   }
+		);
 		
     	initializeConnection(user, password, REST_API_BASE_URL);
 	}
