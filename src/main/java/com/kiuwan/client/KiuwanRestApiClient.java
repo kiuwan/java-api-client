@@ -1,21 +1,23 @@
 package com.kiuwan.client;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
-import java.nio.charset.Charset;
+import java.net.Proxy;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-import org.codehaus.jackson.map.DeserializationConfig;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.glassfish.jersey.filter.LoggingFilter;
 
 import com.kiuwan.client.model.AnalysisComparation;
 import com.kiuwan.client.model.Application;
@@ -24,20 +26,24 @@ import com.kiuwan.client.model.ApplicationFiles;
 import com.kiuwan.client.model.ApplicationResults;
 import com.kiuwan.client.model.Defect;
 import com.kiuwan.client.model.File;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
-import com.sun.jersey.api.client.filter.LoggingFilter;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+import com.kiuwan.client.model.management.applications.ApplicationBean;
+import com.kiuwan.client.model.management.users.UserBean;
 
+/**
+ * This is not a thread-safe client.
+ */
 public class KiuwanRestApiClient {
-	
-	protected static final String REST_API_BASE_URL = "https://api.kiuwan.com";
-	protected WebResource connection;
-	// Reusable Jackson Mapper
-    protected static final ObjectMapper mapper = new ObjectMapper();
 
+	protected static final String REST_API_BASE_URL = "https://api.kiuwan.com";
     
+	private static final String CSRF_TOKEN_HEADER = "X-CSRF-TOKEN";
+
+	private WebTarget connection;
+	
+	private static String csrfToken;
+	
+	private static Map<String, Cookie> cookies = new HashMap<String, Cookie>();
+	
     public KiuwanRestApiClient(String user, String password) {
 		initializeConnection(user, password, REST_API_BASE_URL);
 	}
@@ -46,44 +52,33 @@ public class KiuwanRestApiClient {
 		initializeConnection(user, password, restApiBaseUrl);
 	}
 
-    public KiuwanRestApiClient(String user, String password, String proxyHost, String proxyPort) {
-    	System.setProperty("https.proxyHost", proxyHost);
-    	System.setProperty("https.proxyPort", proxyPort);
-
-    	initializeConnection(user, password, REST_API_BASE_URL);
+    public KiuwanRestApiClient(String user, String password, String proxyHost, Integer proxyPort, Proxy.Type proxyType) {
+    	initializeConnection(user, password, REST_API_BASE_URL, proxyHost, proxyPort, proxyType, null, null);
 	}
 
-    public KiuwanRestApiClient(String user, String password, String proxyHost, String proxyPort, final String proxyUser, final String proxyPassword) {
-    	System.setProperty("https.proxyHost", proxyHost);
-    	System.setProperty("https.proxyPort", proxyPort);
-		
-		Authenticator.setDefault(
-		   new Authenticator() {
-		      public PasswordAuthentication getPasswordAuthentication() {
-		         return new PasswordAuthentication(proxyUser, proxyPassword.toCharArray());
-		      }
-		   }
-		);
-		
-    	initializeConnection(user, password, REST_API_BASE_URL);
+    public KiuwanRestApiClient(String user, String password, String restApiBaseUrl, String proxyHost, Integer proxyPort, Proxy.Type proxyType) {
+    	initializeConnection(user, password, restApiBaseUrl, proxyHost, proxyPort, proxyType, null, null);
+	}
+    
+    public KiuwanRestApiClient(String user, String password, String proxyHost, Integer proxyPort, Proxy.Type proxyType, String proxyUser, String proxyPassword) {
+    	initializeConnection(user, password, REST_API_BASE_URL, proxyHost, proxyPort, proxyType, proxyUser, proxyPassword);
 	}
 
+    public KiuwanRestApiClient(String user, String password, String restApiBaseUrl, String proxyHost, Integer proxyPort, Proxy.Type proxyType, String proxyUser, String proxyPassword) {
+    	initializeConnection(user, password, restApiBaseUrl, proxyHost, proxyPort, proxyType, proxyUser, proxyPassword);
+	}
+    
 	public void activateLog() {
-		connection.addFilter(new LoggingFilter());
+		connection.register(new LoggingFilter());
 	}
-	
 	
 	public List<Application> getApplications() throws KiuwanClientException {
-
 		String path = "/apps/list";
 
-		ClientResponse response = get(path);
-		
+		Response response = get(path);
 		checkStatus(response, 200);
-        InputStream is = response.getEntityInputStream();
-        InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
         try {
-            return readApplications(isr);
+        	return response.readEntity(new GenericType<List<Application>>(){});
         } catch (Exception e) {
             throw new KiuwanClientException(e);
         }
@@ -112,26 +107,20 @@ public class KiuwanRestApiClient {
 	}
 	
 	public ApplicationResults requestAndBuildApplicationResults(String path) throws KiuwanClientException {
-		ClientResponse response = get(path);
-		
+		Response response = get(path);
 		checkStatus(response, 200);
-        InputStream is = response.getEntityInputStream();
-        InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
         try {
-            return readApplication(isr);
+            return response.readEntity(ApplicationResults.class);
         } catch (Exception e) {
             throw new KiuwanClientException(e);
         }
 	}
 	
 	public AnalysisComparation requestAndBuildAnalysisComparation(String path) throws KiuwanClientException {
-		ClientResponse response = get(path);
-		
+		Response response = get(path);
 		checkStatus(response, 200);
-        InputStream is = response.getEntityInputStream();
-        InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
         try {
-            return readAnalysisComparation(isr);
+        	return response.readEntity(AnalysisComparation.class);
         } catch (Exception e) {
             throw new KiuwanClientException(e);
         }
@@ -197,17 +186,14 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/" + appName + "/files";
-		MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-		queryParams.add("page", pageNumber.toString());
-		queryParams.add("count", defectsPerPage.toString());
+		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
+		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
+		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
 
-		ClientResponse response = get(path, queryParams);
-		
+		Response response = get(path, queryParams);
 		checkStatus(response, 200);
-        InputStream is = response.getEntityInputStream();
-        InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
         try {
-            return readApplicationFiles(isr);
+            return response.readEntity(ApplicationFiles.class);
         } catch (Exception e) {
             throw new KiuwanClientException(e);
         }
@@ -220,29 +206,19 @@ public class KiuwanRestApiClient {
 		}
 
 		String path = "/apps/analysis/" + analysisCode + "/files";
-		MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-		queryParams.add("page", pageNumber.toString());
-		queryParams.add("count", defectsPerPage.toString());
+		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
+		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
+		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
 
-		ClientResponse response = get(path, queryParams);
-		
+		Response response = get(path, queryParams);
 		checkStatus(response, 200);
-        InputStream is = response.getEntityInputStream();
-        InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
         try {
-            return readApplicationFiles(isr);
+            return response.readEntity(ApplicationFiles.class);
         } catch (Exception e) {
             throw new KiuwanClientException(e);
         }
 	}
 
-	private ApplicationFiles readApplicationFiles(InputStreamReader isr) throws JsonParseException, JsonMappingException, IOException {
-		return mapper.readValue(isr, new TypeReference<ApplicationFiles>() {
-        });
-	}
-	
-
-	
 	public List<Defect> getAllDefects(String appName) throws KiuwanClientException {
 		
 		if (appName == null || appName.isEmpty()) {
@@ -300,17 +276,14 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/" + appName + "/defects";
-		MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-		queryParams.add("page", pageNumber.toString());
-		queryParams.add("count", defectsPerPage.toString());
+		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
+		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
+		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
 
-		ClientResponse response = get(path, queryParams);
-		
+		Response response = get(path, queryParams);
 		checkStatus(response, 200);
-        InputStream is = response.getEntityInputStream();
-        InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
         try {
-            return readApplicationDefects(isr);
+            return response.readEntity(ApplicationDefects.class);
         } catch (Exception e) {
             throw new KiuwanClientException(e);
         }
@@ -323,57 +296,19 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/analysis/" + analysisCode + "/defects";
-		MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-		queryParams.add("page", pageNumber.toString());
-		queryParams.add("count", defectsPerPage.toString());
+		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
+		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
+		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
 
-		ClientResponse response = get(path, queryParams);
-		
+		Response response = get(path, queryParams);
 		checkStatus(response, 200);
-        InputStream is = response.getEntityInputStream();
-        InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
         try {
-            return readApplicationDefects(isr);
+            return response.readEntity(ApplicationDefects.class);
         } catch (Exception e) {
             throw new KiuwanClientException(e);
         }
 	}
 
-	private ApplicationDefects readApplicationDefects(InputStreamReader isr) throws JsonParseException, JsonMappingException, IOException {
-		return mapper.readValue(isr, new TypeReference<ApplicationDefects>() {
-        });
-	}
-
-	protected ClientResponse get(String resource) {
-        return connection.path(resource).get(ClientResponse.class);
-    }
-	
-	protected ClientResponse get(String resource, MultivaluedMap<String, String> queryParams) {
-        return connection.path(resource).queryParams(queryParams).get(ClientResponse.class);
-    }
-	
-	
-	protected List<Application> readApplications(InputStreamReader isr) throws IOException, JsonParseException, JsonMappingException {
-        return mapper.readValue(isr, new TypeReference<List<Application>>() {
-        });
-    }
-	
-	private ApplicationResults readApplication(InputStreamReader isr) throws JsonParseException, JsonMappingException, IOException {
-		return mapper.readValue(isr, new TypeReference<ApplicationResults>() {
-        });
-	}
-	
-	private AnalysisComparation readAnalysisComparation(InputStreamReader isr) throws JsonParseException, JsonMappingException, IOException {
-		return mapper.readValue(isr, new TypeReference<AnalysisComparation>() {
-        });
-	}
-
-	
-	protected void checkStatus(ClientResponse response, int checkStatus) throws KiuwanClientException {
-        int status = response.getStatus();
-        if (status != checkStatus)
-            throw KiuwanClientException.createResponseStatusException(status);
-    }
 
 	public AnalysisComparation getAnalysisComparation(String mainAnalysisCode, String previousAnalysisCode) throws KiuwanClientException {
 		
@@ -425,17 +360,14 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/analysis/" + mainAnalysisCode + "/defects/compare/" + previousAnalysisCode + "/new";
-		MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-		queryParams.add("page", pageNumber.toString());
-		queryParams.add("count", defectsPerPage.toString());
+		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
+		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
+		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
 
-		ClientResponse response = get(path, queryParams);
-		
+		Response response = get(path, queryParams);
 		checkStatus(response, 200);
-        InputStream is = response.getEntityInputStream();
-        InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
         try {
-            return readAnalysisComparation(isr);
+            return response.readEntity(AnalysisComparation.class);
         } catch (Exception e) {
             throw new KiuwanClientException(e);
         }
@@ -461,6 +393,134 @@ public class KiuwanRestApiClient {
 		
 		return defects;
 	}
+
+	public String createApplications(List<ApplicationBean> applications) throws KiuwanClientException {
+		StringBuilder results = new StringBuilder();
+		String path = "/application";
+		
+		for (ApplicationBean applicationBean : applications) {
+			Response response = post(path, applicationBean);
+			
+			String resultMessage = "";
+			try {
+				resultMessage = response.readEntity(String.class);
+			} catch (Exception e) {
+				resultMessage = "ERROR: "+e.getMessage();
+			}
+			results.append(applicationBean.getName()+" -> "+resultMessage+"\n");
+		}
+		
+		return results.toString();
+	}
+	
+	public String modifyApplications(List<ApplicationBean> applications) throws KiuwanClientException {
+		StringBuilder results = new StringBuilder();
+		String parentPath = "/application";
+		
+		for (ApplicationBean applicationBean : applications) {
+			Response response = put(parentPath+"/"+applicationBean.getName(), applicationBean);
+			
+			String resultMessage = "";
+			try {
+				resultMessage = response.readEntity(String.class);
+			} catch (Exception e) {
+				resultMessage = "ERROR: "+e.getMessage();
+			}
+			results.append(applicationBean.getName()+" -> "+resultMessage+"\n");
+		}
+		
+		return results.toString();
+	}
+	
+	public String deleteApplications(List<ApplicationBean> applications) throws KiuwanClientException {
+		StringBuilder results = new StringBuilder();
+		String parentPath = "/application";
+		
+		for (ApplicationBean applicationBean : applications) {
+			Response response = delete(parentPath+"/"+applicationBean.getName());
+			
+			String resultMessage = "";
+			try {
+				resultMessage = response.readEntity(String.class);
+			} catch (Exception e) {
+				resultMessage = "ERROR: "+e.getMessage();
+			}
+			results.append(applicationBean.getName()+" -> "+resultMessage+"\n");
+		}
+		
+		return results.toString();
+	}
+	
+	public String createUsers(List<UserBean> userBeans) throws KiuwanClientException{
+		StringBuilder results = new StringBuilder();
+		String path = "/user";
+
+		for (UserBean userBean : userBeans) {
+			Response response = post(path, userBean);
+			
+			String resultMessage = "";
+			try {
+				resultMessage = response.readEntity(String.class);
+			} catch (Exception e) {
+				resultMessage = "ERROR: "+e.getMessage();
+			}
+			results.append(userBean.getUsername()+" -> "+resultMessage+"\n");
+
+		}
+		return results.toString();
+	}
+	
+	public String modifyUsers(List<UserBean> userBeans) throws KiuwanClientException{
+		StringBuilder results = new StringBuilder();
+		String parentPath = "/user";
+		
+		for (UserBean userBean : userBeans) {
+			Response response = put(parentPath+"/"+userBean.getUsername(), userBean);
+			
+			String resultMessage = "";
+			try {
+				resultMessage = response.readEntity(String.class);
+			} catch (Exception e) {
+				resultMessage = "ERROR: "+e.getMessage();
+			}
+			results.append(userBean.getUsername()+" -> "+resultMessage+"\n");
+		}
+		return results.toString();
+	}
+	
+	public String deleteUsers(List<UserBean> userBeans) throws KiuwanClientException{
+		StringBuilder results = new StringBuilder();
+		String parentPath = "/user";
+		
+		for (UserBean userBean : userBeans) {
+			Response response = delete(parentPath+"/"+userBean.getUsername());
+			
+			String resultMessage = "";
+			try {
+				resultMessage = response.readEntity(String.class);
+			} catch (Exception e) {
+				resultMessage = "ERROR: "+e.getMessage();
+			}
+			results.append(userBean.getUsername()+" -> "+resultMessage+"\n");
+		}
+		
+		return results.toString();
+	}
+	
+	public List<UserBean> listUsers() throws KiuwanClientException{
+		String path = "/users";
+		
+		Response response = get(path);
+		checkStatus(response, 200);
+		List<UserBean> users = new ArrayList<UserBean>();
+		try {
+			users = response.readEntity(new GenericType<List<UserBean>>(){});
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return users;
+	}
 	
 	/**
 	 * Initializes the connection.
@@ -469,10 +529,22 @@ public class KiuwanRestApiClient {
 	 * @param restApiBaseUrl Base URL for REST-API.
 	 */
 	private void initializeConnection(String user, String password, String restApiBaseUrl) {
-		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		connection = ClientHelper.createClient().resource(restApiBaseUrl);
-		//connection.addFilter(new LoggingFilter());
-		connection.addFilter(new HTTPBasicAuthFilter(user, password));
+		connection = ClientHelper.createClient().register(HttpAuthenticationFeature.basic(user, password)).target(restApiBaseUrl);
+	}
+	
+	/**
+	 * Initializes the connection.
+	 * @param user The user name in Kiuwan.
+	 * @param password The password in Kiuwan.
+	 * @param restApiBaseUrl Base URL for REST-API.
+	 * @param proxyHost Proxy hostname or address.
+	 * @param proxyPort Port of the proxy.
+	 * @param proxyType Type of the proxy: HTTP/SOCKS/DIRECT.
+	 * @param proxyUser User name to authenticate with the proxy.
+	 * @param proxyPassword Password to authenticate with the proxy.
+	 */
+	private void initializeConnection(String user, String password, String restApiBaseUrl, String proxyHost, Integer proxyPort, Proxy.Type proxyType, String proxyUser, String proxyPassword) {
+		connection = ClientHelper.createClient(proxyHost, proxyPort, proxyType, proxyUser, proxyPassword).register(HttpAuthenticationFeature.basic(user, password)).target(restApiBaseUrl);
 	}
 	
 	private AnalysisComparation getRemovedDefectsPage(String mainAnalysisCode, String previousAnalysisCode, Integer pageNumber, Integer defectsPerPage) throws KiuwanClientException {
@@ -486,19 +558,105 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/analysis/" + mainAnalysisCode + "/defects/compare/" + previousAnalysisCode + "/removed";
-		MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-		queryParams.add("page", pageNumber.toString());
-		queryParams.add("count", defectsPerPage.toString());
+		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
+		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
+		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
 
-		ClientResponse response = get(path, queryParams);
-		
+		Response response = get(path, queryParams);
 		checkStatus(response, 200);
-        InputStream is = response.getEntityInputStream();
-        InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
         try {
-            return readAnalysisComparation(isr);
+            return response.readEntity(AnalysisComparation.class);
         } catch (Exception e) {
             throw new KiuwanClientException(e);
         }
 	}
+
+	private Response get(String resource) {
+        Builder request = connection.path(resource).request();
+        setCookies(request);
+        setCsrfToken(request);
+        Response response = request.get(Response.class);
+        saveCookies(response);
+        saveCsrfToken(response);
+        return response;
+    }
+
+	private Response delete(String resource) {
+        Builder request = connection.path(resource).request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE);
+        setCookies(request);
+        setCsrfToken(request);
+		Response response = request.delete(Response.class);
+        saveCookies(response);
+        saveCsrfToken(response);
+        return response;
+    }
+
+	private Response put(String resource, Object content) {
+        Builder request = connection.path(resource).request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE);
+        setCookies(request);
+        setCsrfToken(request);
+        Response response = request.put(Entity.entity(content, MediaType.APPLICATION_JSON_TYPE), Response.class);
+        saveCookies(response);
+        saveCsrfToken(response);
+        return response;
+    }
+	
+	private Response post(String resource, Object content) {
+        Builder request = connection.path(resource).request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE);
+        setCookies(request);
+        setCsrfToken(request);
+        Response response = request.post(Entity.entity(content, MediaType.APPLICATION_JSON_TYPE), Response.class);
+        saveCookies(response);
+        saveCsrfToken(response);
+        return response;
+    }
+	
+	private Response get(String resource, Map<String, List<String>> queryParams) {
+		WebTarget path = connection.path(resource);
+		for (String parameter : queryParams.keySet()) {
+			path.queryParam(parameter, queryParams.get(parameter));
+		}
+		
+        Builder request = path.request(MediaType.APPLICATION_JSON_TYPE);
+        setCookies(request);
+        setCsrfToken(request);
+		Response response = request.get(Response.class);
+        saveCookies(response);
+        saveCsrfToken(response);
+        return response;
+	}
+	
+	private void setCookies(Builder request) {
+		for (Cookie cookie : KiuwanRestApiClient.cookies.values()) {
+			request.cookie(cookie);
+		}
+	}
+	
+	private void setCsrfToken(Builder request) {
+		String csrfToken = KiuwanRestApiClient.csrfToken;
+		if(csrfToken != null){
+			request.header(CSRF_TOKEN_HEADER, csrfToken);
+		}
+	}
+
+	private void saveCsrfToken(Response response) {
+		String token = response.getHeaderString(CSRF_TOKEN_HEADER);
+		if(token != null){
+			KiuwanRestApiClient.csrfToken = token;
+		}
+	}
+	
+	private void saveCookies(Response response) {
+		Map<String, NewCookie> cookies = response.getCookies();
+        if(cookies != null){
+        	KiuwanRestApiClient.cookies.putAll(cookies);
+        }
+	}
+	
+	private void checkStatus(Response response, int checkStatus) throws KiuwanClientException {
+        int status = response.getStatus();
+        if (status != checkStatus)
+            throw KiuwanClientException.createResponseStatusException(status);
+    }
+	
 }
