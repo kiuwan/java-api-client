@@ -614,7 +614,7 @@ public class KiuwanRestApiClient {
 	private Response get(String resource, Map<String, List<String>> queryParams) {
 		WebTarget path = connection.path(resource);
 		for (String parameter : queryParams.keySet()) {
-			path.queryParam(parameter, queryParams.get(parameter));
+			path = path.queryParam(parameter, queryParams.get(parameter));
 		}
 		
         Builder request = path.request(MediaType.APPLICATION_JSON_TYPE);
