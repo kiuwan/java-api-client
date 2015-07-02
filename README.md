@@ -8,7 +8,7 @@ Maven configuration:
 	<dependency>
 		<groupId>com.kiuwan</groupId>
 		<artifactId>java-api-client</artifactId>
-		<version>0.0.4</version>
+		<version>0.0.5</version>
 	</dependency>
 	
 Supported actions are: (New actions are marked with (*))
@@ -20,12 +20,15 @@ Supported actions are: (New actions are marked with (*))
   - Get all defects from your application indicating the analysis code.
   - Get files (with metric values and defects) from your application indicating the analysis code.
   - Get the differences of defects between two analysis.
-  - Create new applications. (*)
-  - Create new users in your account. (*)
-  - Delete applications. (*)
-  - Delete users of your account. (*)
-  - Modify applications' information. (*)
-  - Modify users' information. (*) 
+  - Create new applications.
+  - Create new users in your account.
+  - Create new user groups in your account. (*)
+  - Delete applications.
+  - Delete users of your account.
+  - Delete user groups of your account. (*)
+  - Modify applications' information.
+  - Modify users' information.
+  - Modify user groups' information. (*)
   
 Source code includes examples that shows you how to execute each supported action. (New examples are marked with (*))
 
@@ -36,12 +39,15 @@ Source code includes examples that shows you how to execute each supported actio
   - <a href="src/main/java/com/kiuwan/client/examples/AnalysisDefects.java">com.kiuwan.client.examples.AnalysisDefects.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/AnalysisFiles.java">com.kiuwan.client.examples.AnalysisFiles.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/CompareAnalysisDefects.java">com.kiuwan.client.examples.CompareAnalysisDefects.java</a>
-  - <a href="src/main/java/com/kiuwan/client/examples/CreateApplications.java">com.kiuwan.client.examples.CreateApplications.java</a> (*) 
-  - <a href="src/main/java/com/kiuwan/client/examples/CreateUsers.java">com.kiuwan.client.examples.CreateUsers.java</a> (*) 
-  - <a href="src/main/java/com/kiuwan/client/examples/DeleteApplications.java">com.kiuwan.client.examples.DeleteApplications.java</a> (*) 
-  - <a href="src/main/java/com/kiuwan/client/examples/DeleteUsers.java">com.kiuwan.client.examples.DeleteUsers.java</a> (*)
-  - <a href="src/main/java/com/kiuwan/client/examples/ModifyApplications.java">com.kiuwan.client.examples.ModifyApplications.java</a> (*)
-  - <a href="src/main/java/com/kiuwan/client/examples/ModifyUsers.java">com.kiuwan.client.examples.ModifyUsers.java</a> (*)
+  - <a href="src/main/java/com/kiuwan/client/examples/CreateApplications.java">com.kiuwan.client.examples.CreateApplications.java</a> 
+  - <a href="src/main/java/com/kiuwan/client/examples/CreateUsers.java">com.kiuwan.client.examples.CreateUsers.java</a>
+  - <a href="src/main/java/com/kiuwan/client/examples/CreateUsers.java">com.kiuwan.client.examples.CreateUserGroups.java</a> (*) 
+  - <a href="src/main/java/com/kiuwan/client/examples/DeleteApplications.java">com.kiuwan.client.examples.DeleteApplications.java</a> 
+  - <a href="src/main/java/com/kiuwan/client/examples/DeleteUsers.java">com.kiuwan.client.examples.DeleteUsers.java</a>
+  - <a href="src/main/java/com/kiuwan/client/examples/DeleteUsers.java">com.kiuwan.client.examples.DeleteUserGroups.java</a> (*)
+  - <a href="src/main/java/com/kiuwan/client/examples/ModifyApplications.java">com.kiuwan.client.examples.ModifyApplications.java</a>
+  - <a href="src/main/java/com/kiuwan/client/examples/ModifyUsers.java">com.kiuwan.client.examples.ModifyUsers.java</a>
+  - <a href="src/main/java/com/kiuwan/client/examples/ModifyUsers.java">com.kiuwan.client.examples.ModifyUserGroups.java</a> (*)
 
 Example of use:
 

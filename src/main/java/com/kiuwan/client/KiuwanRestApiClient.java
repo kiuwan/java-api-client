@@ -2,7 +2,6 @@ package com.kiuwan.client;
 
 import java.net.Proxy;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ import com.kiuwan.client.model.Defect;
 import com.kiuwan.client.model.File;
 import com.kiuwan.client.model.management.applications.ApplicationBean;
 import com.kiuwan.client.model.management.users.UserBean;
+import com.kiuwan.client.model.management.users.groups.UserGroupBean;
 
 /**
  * This is not a thread-safe client.
@@ -141,7 +141,7 @@ public class KiuwanRestApiClient {
 			
 			ApplicationFiles appFiles = getApplicationFilesPage(appName, page++, 500);
 			if (appFiles == null) {
-				throw new KiuwanClientException("Unkonwn error");
+				throw new KiuwanClientException("Unknown error");
 			}
 			
 			count = appFiles.getFiles().size();
@@ -167,7 +167,7 @@ public class KiuwanRestApiClient {
 			
 			ApplicationFiles appFiles = getAnalysisFilesPage(analysisCode, page++, 500);
 			if (appFiles == null) {
-				throw new KiuwanClientException("Unkonwn error");
+				throw new KiuwanClientException("Unknown error");
 			}
 			
 			count = appFiles.getFiles().size();
@@ -186,9 +186,9 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/" + appName + "/files";
-		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
-		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
-		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("page", new String[]{pageNumber.toString()});
+		queryParams.put("count", new String[]{defectsPerPage.toString()});
 
 		Response response = get(path, queryParams);
 		checkStatus(response, 200);
@@ -206,9 +206,9 @@ public class KiuwanRestApiClient {
 		}
 
 		String path = "/apps/analysis/" + analysisCode + "/files";
-		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
-		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
-		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("page", new String[]{pageNumber.toString()});
+		queryParams.put("count", new String[]{defectsPerPage.toString()});
 
 		Response response = get(path, queryParams);
 		checkStatus(response, 200);
@@ -233,7 +233,7 @@ public class KiuwanRestApiClient {
 			
 			ApplicationDefects appDefects = getApplicationDefectsPage(appName, page++, 500);
 			if (appDefects == null) {
-				throw new KiuwanClientException("Unkonwn error");
+				throw new KiuwanClientException("Unknown error");
 			}
 			
 			count = appDefects.getDefects().size();
@@ -258,7 +258,7 @@ public class KiuwanRestApiClient {
 			
 			ApplicationDefects appDefects = getAnalysisDefectsPage(analysisCode, page++, 500);
 			if (appDefects == null || appDefects.getDefects() == null) {
-				throw new KiuwanClientException("Unkonwn error");
+				throw new KiuwanClientException("Unknown error");
 			}
 			
 			count = appDefects.getDefects().size();
@@ -276,9 +276,9 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/" + appName + "/defects";
-		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
-		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
-		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("page", new String[]{pageNumber.toString()});
+		queryParams.put("count", new String[]{defectsPerPage.toString()});
 
 		Response response = get(path, queryParams);
 		checkStatus(response, 200);
@@ -296,9 +296,9 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/analysis/" + analysisCode + "/defects";
-		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
-		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
-		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("page", new String[]{pageNumber.toString()});
+		queryParams.put("count", new String[]{defectsPerPage.toString()});
 
 		Response response = get(path, queryParams);
 		checkStatus(response, 200);
@@ -321,8 +321,7 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/analysis/" + mainAnalysisCode + "/defects/compare/" + previousAnalysisCode;
-		
-		
+				
 		return requestAndBuildAnalysisComparation(path);
 	}
 	
@@ -337,7 +336,7 @@ public class KiuwanRestApiClient {
 			
 			AnalysisComparation analysisComparation = getNewDefectsPage(mainAnalysisCode, previousAnalysisCode, page++, 500);
 			if (analysisComparation == null) {
-				throw new KiuwanClientException("Unkonwn error");
+				throw new KiuwanClientException("Unknown error");
 			}
 			
 			count = analysisComparation.getNewDefects().size();
@@ -360,9 +359,9 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/analysis/" + mainAnalysisCode + "/defects/compare/" + previousAnalysisCode + "/new";
-		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
-		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
-		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("page", new String[]{pageNumber.toString()});
+		queryParams.put("count", new String[]{defectsPerPage.toString()});
 
 		Response response = get(path, queryParams);
 		checkStatus(response, 200);
@@ -383,7 +382,7 @@ public class KiuwanRestApiClient {
 			
 			AnalysisComparation analysisComparation = getRemovedDefectsPage(mainAnalysisCode, previousAnalysisCode, page++, 500);
 			if (analysisComparation == null) {
-				throw new KiuwanClientException("Unkonwn error");
+				throw new KiuwanClientException("Unknown error");
 			}
 			
 			count = analysisComparation.getRemovedDefects().size();
@@ -396,7 +395,7 @@ public class KiuwanRestApiClient {
 
 	public String createApplications(List<ApplicationBean> applications) throws KiuwanClientException {
 		StringBuilder results = new StringBuilder();
-		String path = "/application";
+		String path = "/applications";
 		
 		for (ApplicationBean applicationBean : applications) {
 			Response response = post(path, applicationBean);
@@ -415,7 +414,7 @@ public class KiuwanRestApiClient {
 	
 	public String modifyApplications(List<ApplicationBean> applications) throws KiuwanClientException {
 		StringBuilder results = new StringBuilder();
-		String parentPath = "/application";
+		String parentPath = "/applications";
 		
 		for (ApplicationBean applicationBean : applications) {
 			Response response = put(parentPath+"/"+applicationBean.getName(), applicationBean);
@@ -434,7 +433,7 @@ public class KiuwanRestApiClient {
 	
 	public String deleteApplications(List<ApplicationBean> applications) throws KiuwanClientException {
 		StringBuilder results = new StringBuilder();
-		String parentPath = "/application";
+		String parentPath = "/applications";
 		
 		for (ApplicationBean applicationBean : applications) {
 			Response response = delete(parentPath+"/"+applicationBean.getName());
@@ -453,7 +452,7 @@ public class KiuwanRestApiClient {
 	
 	public String createUsers(List<UserBean> userBeans) throws KiuwanClientException{
 		StringBuilder results = new StringBuilder();
-		String path = "/user";
+		String path = "/users";
 
 		for (UserBean userBean : userBeans) {
 			Response response = post(path, userBean);
@@ -470,9 +469,28 @@ public class KiuwanRestApiClient {
 		return results.toString();
 	}
 	
+	public String createUserGroups(List<UserGroupBean> userGroupBeans) throws KiuwanClientException{
+		StringBuilder results = new StringBuilder();
+		String path = "/userGroups";
+
+		for (UserGroupBean userGroupBean : userGroupBeans) {
+			Response response = post(path, userGroupBean);
+			
+			String resultMessage = "";
+			try {
+				resultMessage = response.readEntity(String.class);
+			} catch (Exception e) {
+				resultMessage = "ERROR: "+e.getMessage();
+			}
+			results.append(userGroupBean.getName()+" -> "+resultMessage+"\n");
+
+		}
+		return results.toString();
+	}
+	
 	public String modifyUsers(List<UserBean> userBeans) throws KiuwanClientException{
 		StringBuilder results = new StringBuilder();
-		String parentPath = "/user";
+		String parentPath = "/users";
 		
 		for (UserBean userBean : userBeans) {
 			Response response = put(parentPath+"/"+userBean.getUsername(), userBean);
@@ -488,9 +506,27 @@ public class KiuwanRestApiClient {
 		return results.toString();
 	}
 	
+	public String modifyUserGroups(List<UserGroupBean> userGroupBeans) throws KiuwanClientException{
+		StringBuilder results = new StringBuilder();
+		String parentPath = "/userGroups";
+		
+		for (UserGroupBean userGroupBean : userGroupBeans) {
+			Response response = put(parentPath+"/"+userGroupBean.getName(), userGroupBean);
+			
+			String resultMessage = "";
+			try {
+				resultMessage = response.readEntity(String.class);
+			} catch (Exception e) {
+				resultMessage = "ERROR: "+e.getMessage();
+			}
+			results.append(userGroupBean.getName()+" -> "+resultMessage+"\n");
+		}
+		return results.toString();
+	}
+	
 	public String deleteUsers(List<UserBean> userBeans) throws KiuwanClientException{
 		StringBuilder results = new StringBuilder();
-		String parentPath = "/user";
+		String parentPath = "/users";
 		
 		for (UserBean userBean : userBeans) {
 			Response response = delete(parentPath+"/"+userBean.getUsername());
@@ -502,6 +538,25 @@ public class KiuwanRestApiClient {
 				resultMessage = "ERROR: "+e.getMessage();
 			}
 			results.append(userBean.getUsername()+" -> "+resultMessage+"\n");
+		}
+		
+		return results.toString();
+	}
+	
+	public String deleteUserGroups(List<UserGroupBean> userGroupBeans) throws KiuwanClientException{
+		StringBuilder results = new StringBuilder();
+		String parentPath = "/userGroups";
+		
+		for (UserGroupBean userGroupBean : userGroupBeans) {
+			Response response = delete(parentPath+"/"+userGroupBean.getName());
+			
+			String resultMessage = "";
+			try {
+				resultMessage = response.readEntity(String.class);
+			} catch (Exception e) {
+				resultMessage = "ERROR: "+e.getMessage();
+			}
+			results.append(userGroupBean.getName()+" -> "+resultMessage+"\n");
 		}
 		
 		return results.toString();
@@ -520,6 +575,21 @@ public class KiuwanRestApiClient {
 		}
 		
 		return users;
+	}
+	
+	public List<UserGroupBean> listUserGroups() throws KiuwanClientException{
+		String path = "/userGroups";
+		
+		Response response = get(path);
+		checkStatus(response, 200);
+		List<UserGroupBean> userGroups = new ArrayList<UserGroupBean>();
+		try {
+			userGroups = response.readEntity(new GenericType<List<UserGroupBean>>(){});
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return userGroups;
 	}
 	
 	/**
@@ -558,9 +628,9 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/analysis/" + mainAnalysisCode + "/defects/compare/" + previousAnalysisCode + "/removed";
-		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
-		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
-		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("page", new String[]{pageNumber.toString()});
+		queryParams.put("count", new String[]{defectsPerPage.toString()});
 
 		Response response = get(path, queryParams);
 		checkStatus(response, 200);
@@ -611,10 +681,10 @@ public class KiuwanRestApiClient {
         return response;
     }
 	
-	private Response get(String resource, Map<String, List<String>> queryParams) {
+	private Response get(String resource, Map<String, String[]> queryParams) {
 		WebTarget path = connection.path(resource);
-		for (String parameter : queryParams.keySet()) {
-			path.queryParam(parameter, queryParams.get(parameter));
+		for(String parameter : queryParams.keySet()) {
+			path = path.queryParam(parameter, (Object[])queryParams.get(parameter));
 		}
 		
         Builder request = path.request(MediaType.APPLICATION_JSON_TYPE);

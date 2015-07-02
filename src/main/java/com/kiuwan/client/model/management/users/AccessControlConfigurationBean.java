@@ -26,6 +26,11 @@ public class AccessControlConfigurationBean {
 		private String assignmentMode;
 
 		/**
+		 * Indicates if override {@link UserGroup} config or not.
+		 */
+		private Boolean overrideUserGroupConfig = null;
+		
+		/**
 		 * Management features to enable/disable.
 		 */
 		private Collection<String> managementFeatures = null;
@@ -39,6 +44,20 @@ public class AccessControlConfigurationBean {
 		 * Application roles.
 		 */
 		private Collection<ApplicationRoleBean> applicationRoles = null;
+
+		/**
+		 * @return the overrideUserGroupConfig
+		 */
+		public Boolean getOverrideUserGroupConfig() {
+			return overrideUserGroupConfig;
+		}
+
+		/**
+		 * @param overrideUserGroupConfig the overrideUserGroupConfig to set
+		 */
+		public void setOverrideUserGroupConfig(Boolean overrideUserGroupConfig) {
+			this.overrideUserGroupConfig = overrideUserGroupConfig;
+		}
 
 		/**
 		 * @return the assignmentMode
