@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.glassfish.jersey.filter.LoggingFilter;
 
+import com.kiuwan.client.model.AnalysisBean;
 import com.kiuwan.client.model.AnalysisComparation;
 import com.kiuwan.client.model.Application;
 import com.kiuwan.client.model.ApplicationDefects;
@@ -347,6 +348,18 @@ public class KiuwanRestApiClient {
 		return defects;
 	}
 	
+	public List<AnalysisBean> getAnalyses(String application) throws KiuwanClientException{
+		String path = "/apps/" + application + "/analyses";
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+        try {
+            return response.readEntity(new GenericType<List<AnalysisBean>>(){});
+        } catch (Exception e) {
+        	throw new KiuwanClientException(e);
+        }
+	}
 	
 	private AnalysisComparation getNewDefectsPage(String mainAnalysisCode, String previousAnalysisCode, Integer pageNumber, Integer defectsPerPage) throws KiuwanClientException {
 		

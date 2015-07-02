@@ -13,6 +13,7 @@ Maven configuration:
 	
 Supported actions are: (New actions are marked with (*))
 
+  - List analyses of an application. (*)
   - List your applications.
   - Get last analysis results from your application.
   - Get all defects from your application.
@@ -32,6 +33,7 @@ Supported actions are: (New actions are marked with (*))
   
 Source code includes examples that shows you how to execute each supported action. (New examples are marked with (*))
 
+  - <a href="src/main/java/com/kiuwan/client/examples/ListAnalyses.java">com.kiuwan.client.examples.ListAnalyses.java</a> (*)
   - <a href="src/main/java/com/kiuwan/client/examples/ListApplications.java">com.kiuwan.client.examples.ListApplications.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/ApplicationsResults.java">com.kiuwan.client.examples.ApplicationsResults.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/ApplicationDefects.java">com.kiuwan.client.examples.ApplicationDefects.java</a>
