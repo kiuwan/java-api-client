@@ -186,9 +186,9 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/" + appName + "/files";
-		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
-		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
-		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
+		Map<String, String> queryParams = new HashMap<String, String>();
+		queryParams.put("page", pageNumber.toString());
+		queryParams.put("count", defectsPerPage.toString());
 
 		Response response = get(path, queryParams);
 		checkStatus(response, 200);
@@ -206,9 +206,9 @@ public class KiuwanRestApiClient {
 		}
 
 		String path = "/apps/analysis/" + analysisCode + "/files";
-		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
-		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
-		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
+		Map<String, String> queryParams = new HashMap<String, String>();
+		queryParams.put("page", pageNumber.toString());
+		queryParams.put("count", defectsPerPage.toString());
 
 		Response response = get(path, queryParams);
 		checkStatus(response, 200);
@@ -276,9 +276,9 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/" + appName + "/defects";
-		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
-		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
-		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
+		Map<String, String> queryParams = new HashMap<String, String>();
+		queryParams.put("page", pageNumber.toString());
+		queryParams.put("count", defectsPerPage.toString());
 
 		Response response = get(path, queryParams);
 		checkStatus(response, 200);
@@ -296,9 +296,9 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/analysis/" + analysisCode + "/defects";
-		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
-		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
-		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
+		Map<String, String> queryParams = new HashMap<String, String>();
+		queryParams.put("page", pageNumber.toString());
+		queryParams.put("count", defectsPerPage.toString());
 
 		Response response = get(path, queryParams);
 		checkStatus(response, 200);
@@ -360,9 +360,9 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/analysis/" + mainAnalysisCode + "/defects/compare/" + previousAnalysisCode + "/new";
-		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
-		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
-		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
+		Map<String, String> queryParams = new HashMap<String, String>();
+		queryParams.put("page", pageNumber.toString());
+		queryParams.put("count", defectsPerPage.toString());
 
 		Response response = get(path, queryParams);
 		checkStatus(response, 200);
@@ -558,9 +558,9 @@ public class KiuwanRestApiClient {
 		}
 		
 		String path = "/apps/analysis/" + mainAnalysisCode + "/defects/compare/" + previousAnalysisCode + "/removed";
-		Map<String, List<String>> queryParams = new HashMap<String, List<String>>();
-		queryParams.put("page", Collections.singletonList(pageNumber.toString()));
-		queryParams.put("count", Collections.singletonList(defectsPerPage.toString()));
+		Map<String, String> queryParams = new HashMap<String, String>();
+		queryParams.put("page", pageNumber.toString());
+		queryParams.put("count", defectsPerPage.toString());
 
 		Response response = get(path, queryParams);
 		checkStatus(response, 200);
@@ -611,7 +611,7 @@ public class KiuwanRestApiClient {
         return response;
     }
 	
-	private Response get(String resource, Map<String, List<String>> queryParams) {
+	private Response get(String resource, Map<String, String> queryParams) {
 		WebTarget path = connection.path(resource);
 		for (String parameter : queryParams.keySet()) {
 			path = path.queryParam(parameter, queryParams.get(parameter));
