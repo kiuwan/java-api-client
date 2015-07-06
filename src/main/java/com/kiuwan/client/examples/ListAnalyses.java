@@ -13,7 +13,7 @@ public class ListAnalyses {
 	 */
 	public static void main(String[] args) {
 		
-		if(args.length != 2)
+		if(args.length != 3)
 	    {
 	        System.out.println("You need to pass 3 parameters: username password applicationName");
 	        return;
