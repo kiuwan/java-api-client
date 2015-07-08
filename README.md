@@ -43,13 +43,13 @@ Source code includes examples that shows you how to execute each supported actio
   - <a href="src/main/java/com/kiuwan/client/examples/CompareAnalysisDefects.java">com.kiuwan.client.examples.CompareAnalysisDefects.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/CreateApplications.java">com.kiuwan.client.examples.CreateApplications.java</a> 
   - <a href="src/main/java/com/kiuwan/client/examples/CreateUsers.java">com.kiuwan.client.examples.CreateUsers.java</a>
-  - <a href="src/main/java/com/kiuwan/client/examples/CreateUsers.java">com.kiuwan.client.examples.CreateUserGroups.java</a> (*) 
+  - <a href="src/main/java/com/kiuwan/client/examples/CreateUserGroups.java">com.kiuwan.client.examples.CreateUserGroups.java</a> (*) 
   - <a href="src/main/java/com/kiuwan/client/examples/DeleteApplications.java">com.kiuwan.client.examples.DeleteApplications.java</a> 
   - <a href="src/main/java/com/kiuwan/client/examples/DeleteUsers.java">com.kiuwan.client.examples.DeleteUsers.java</a>
-  - <a href="src/main/java/com/kiuwan/client/examples/DeleteUsers.java">com.kiuwan.client.examples.DeleteUserGroups.java</a> (*)
+  - <a href="src/main/java/com/kiuwan/client/examples/DeleteUserGroups.java">com.kiuwan.client.examples.DeleteUserGroups.java</a> (*)
   - <a href="src/main/java/com/kiuwan/client/examples/ModifyApplications.java">com.kiuwan.client.examples.ModifyApplications.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/ModifyUsers.java">com.kiuwan.client.examples.ModifyUsers.java</a>
-  - <a href="src/main/java/com/kiuwan/client/examples/ModifyUsers.java">com.kiuwan.client.examples.ModifyUserGroups.java</a> (*)
+  - <a href="src/main/java/com/kiuwan/client/examples/ModifyUserGroups.java">com.kiuwan.client.examples.ModifyUserGroups.java</a> (*)
 
 Example of use:
 
