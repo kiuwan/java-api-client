@@ -180,7 +180,7 @@ public class AnalysisBean {
 		}
 		
 		return "Analysis [code=" + code + ", label=" + label + ", " + "creationDate=" + creationDate
-				+ "qualityModel=" + qualityModel + ", encoding=" + encoding + ", invoker=" + invoker + ", status=" + status + ", errorCode=" + errorCode + ", unparsedFiles="
+				+ ", qualityModel=" + qualityModel + ", encoding=" + encoding + ", invoker=" + invoker + ", status=" + status + ", errorCode=" + errorCode + ", unparsedFiles="
 				+ "["+unparsedFilesString+"]]";
 	}
 	
