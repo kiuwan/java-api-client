@@ -179,7 +179,7 @@ public class AnalysisBean {
 			unparsedFilesString = unparsedFilesString + "{file:"+file+", cause:"+cause+"}";
 		}
 		
-		return "Defect [code=" + code + ", label=" + label + ", " + "creationDate=" + creationDate
+		return "Analysis [code=" + code + ", label=" + label + ", " + "creationDate=" + creationDate
 				+ "qualityModel=" + qualityModel + ", encoding=" + encoding + ", invoker=" + invoker + ", status=" + status + ", errorCode=" + errorCode + ", unparsedFiles="
 				+ "["+unparsedFilesString+"]]";
 	}
