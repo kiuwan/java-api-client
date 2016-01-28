@@ -14,7 +14,7 @@ public class Defect {
 	protected String language;
 	protected String characteristic;
 	protected String priority;
-	protected String difficulty;
+	protected String effort;
 	protected String rule;
 	protected String file;
 	protected Long line;
@@ -37,11 +37,11 @@ public class Defect {
 	public void setPriority(String priority) {
 		this.priority = priority;
 	}
-	public String getDifficulty() {
-		return difficulty;
+	public String getEffort() {
+		return effort;
 	}
-	public void setDifficulty(String difficulty) {
-		this.difficulty = difficulty;
+	public void setEffort(String effort) {
+		this.effort = effort;
 	}
 	public String getRule() {
 		return rule;
@@ -70,8 +70,8 @@ public class Defect {
 	@Override
 	public String toString() {
 		return "Defect [language=" + language + ", characteristic="
-				+ characteristic + ", priority=" + priority + ", difficulty="
-				+ difficulty + ", rule=" + rule + ", file=" + file + ", line="
+				+ characteristic + ", priority=" + priority + ", effort="
+				+ effort + ", rule=" + rule + ", file=" + file + ", line="
 				+ line + ", code=" + code + "]";
 	}
 	

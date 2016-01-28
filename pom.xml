@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.kiuwan</groupId>
 	<artifactId>java-api-client</artifactId>
-	<version>0.0.6-SNAPSHOT</version>
+	<version>0.0.7-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>kiuwan-api-client</name>
 	<description>Java client for Kiuwan's rest api</description>
@@ -29,10 +28,10 @@
 
 
 	<scm>
-		<connection>scm:git:git://github.com/kiuwan/java-api-client.git</connection>
+		<connection>scm:git:git://github.com:kiuwan/java-api-client.git</connection>
 		<developerConnection>scm:git:git@github.com:kiuwan/java-api-client.git</developerConnection>
 		<url>https://github.com/kiuwan/java-api-client.git</url>
-	</scm>
+  </scm>
 
 	<dependencies>
 		<dependency>
@@ -46,4 +45,5 @@
 			<version>2.17</version>
 		</dependency>
 	</dependencies>
+	
 </project>

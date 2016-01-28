@@ -46,6 +46,16 @@ public class AccessControlConfigurationBean {
 		private Collection<ApplicationRoleBean> applicationRoles = null;
 
 		/**
+		 * Business value roles.
+		 */
+		private Collection<BusinessValueRoleBean> businessValueRoles = null;
+
+		/**
+		 * Provider roles.
+		 */
+		private Collection<ProviderRoleBean> providerRoles = null;
+		
+		/**
 		 * @return the overrideUserGroupConfig
 		 */
 		public Boolean getOverrideUserGroupConfig() {
@@ -113,6 +123,34 @@ public class AccessControlConfigurationBean {
 		 */
 		public void setApplicationRoles(Collection<ApplicationRoleBean> applicationRoles) {
 			this.applicationRoles = applicationRoles;
+		}
+
+		/**
+		 * @return the businessValuePortfolioRoles
+		 */
+		public Collection<BusinessValueRoleBean> getBusinessValueRoles() {
+			return businessValueRoles;
+		}
+
+		/**
+		 * @param businessValueRoles the businessValueRoles to set
+		 */
+		public void setBusinessValueRoles(Collection<BusinessValueRoleBean> businessValueRoles) {
+			this.businessValueRoles = businessValueRoles;
+		}
+
+		/**
+		 * @return the providerRoles
+		 */
+		public Collection<ProviderRoleBean> getProviderRoles() {
+			return providerRoles;
+		}
+
+		/**
+		 * @param providerRoles the providerRoles to set
+		 */
+		public void setProviderRoles(Collection<ProviderRoleBean> providerRoles) {
+			this.providerRoles = providerRoles;
 		}
 		
 }
