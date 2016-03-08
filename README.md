@@ -8,12 +8,12 @@ Maven configuration:
 	<dependency>
 		<groupId>com.kiuwan</groupId>
 		<artifactId>java-api-client</artifactId>
-		<version>0.0.6</version>
+		<version>0.0.7</version>
 	</dependency>
 	
 Changes in this version:
 
-  - Removed difficulty from Defect entity, and replaced with effort.
+  - Added method to get metrics of an analysis.
 	
 Supported actions are:
 
@@ -24,6 +24,7 @@ Supported actions are:
   - Get files (with metric values and defects) from your application.
   - Get all defects from your application indicating the analysis code.
   - Get files (with metric values and defects) from your application indicating the analysis code.
+  - Get metrics from your application indicating the analysis code.
   - Get the differences of defects between two analysis.
   - Create new applications.
   - Create new users in your account.
@@ -44,6 +45,7 @@ Source code includes examples that shows you how to execute each supported actio
   - <a href="src/main/java/com/kiuwan/client/examples/ApplicationFiles.java">com.kiuwan.client.examples.ApplicationFiles.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/AnalysisDefects.java">com.kiuwan.client.examples.AnalysisDefects.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/AnalysisFiles.java">com.kiuwan.client.examples.AnalysisFiles.java</a>
+  - <a href="src/main/java/com/kiuwan/client/examples/AnalysisMetrics.java">com.kiuwan.client.examples.AnalysisMetrics.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/CompareAnalysisDefects.java">com.kiuwan.client.examples.CompareAnalysisDefects.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/CreateApplications.java">com.kiuwan.client.examples.CreateApplications.java</a> 
   - <a href="src/main/java/com/kiuwan/client/examples/CreateUsers.java">com.kiuwan.client.examples.CreateUsers.java</a>

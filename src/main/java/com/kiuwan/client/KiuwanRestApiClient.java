@@ -245,6 +245,25 @@ public class KiuwanRestApiClient {
 		return defects;
 	}
 	
+	public Map<String, Double> getMetrics(String analysisCode) throws KiuwanClientException {
+		
+		if (analysisCode == null || analysisCode.isEmpty()) {
+			throw new KiuwanClientException("Invalid analysis code");
+		}
+		
+		String path = "/metrics";
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("code", new String[]{analysisCode});
+
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+        try {
+            return response.readEntity(new GenericType<Map<String, Double>>() {});
+        } catch (Exception e) {
+            throw new KiuwanClientException(e);
+        }
+	}
+	
 	public List<Defect> getAllAnalysisDefects(String analysisCode) throws KiuwanClientException {
 		
 		if (analysisCode == null || analysisCode.isEmpty()) {
@@ -741,5 +760,5 @@ public class KiuwanRestApiClient {
         if (status != checkStatus)
             throw KiuwanClientException.createResponseStatusException(status);
     }
-	
+
 }
