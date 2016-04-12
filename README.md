@@ -8,7 +8,7 @@ Maven configuration:
 	<dependency>
 		<groupId>com.kiuwan</groupId>
 		<artifactId>java-api-client</artifactId>
-		<version>0.0.7</version>
+		<version>0.0.6</version>
 	</dependency>
 	
 Changes in this version:

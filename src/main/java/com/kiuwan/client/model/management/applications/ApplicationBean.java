@@ -38,6 +38,8 @@ public class ApplicationBean {
 	
 	private String businessValue;
 	
+	private String provider;
+	
 	private Collection<PortfolioBean> portfolios = new HashSet<PortfolioBean>();
 
 	private Map<String, Double> targets = new HashMap<String, Double>();
@@ -100,6 +102,20 @@ public class ApplicationBean {
 
 	public void setBusinessValue(String businessValue) {
 		this.businessValue = businessValue;
+	}
+
+	/**
+	 * @return the provider
+	 */
+	public String getProvider() {
+		return provider;
+	}
+
+	/**
+	 * @param provider the provider to set
+	 */
+	public void setProvider(String provider) {
+		this.provider = provider;
 	}
 
 	/**
