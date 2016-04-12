@@ -8,12 +8,13 @@ Maven configuration:
 	<dependency>
 		<groupId>com.kiuwan</groupId>
 		<artifactId>java-api-client</artifactId>
-		<version>0.0.6</version>
+		<version>0.0.7</version>
 	</dependency>
 	
 Changes in this version:
 
   - Added method to get metrics of an analysis.
+  - Added provider assignment in ApplicationBean.
 	
 Supported actions are:
 
