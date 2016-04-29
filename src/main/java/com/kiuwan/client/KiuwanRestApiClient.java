@@ -24,6 +24,7 @@ import com.kiuwan.client.model.Application;
 import com.kiuwan.client.model.ApplicationDefects;
 import com.kiuwan.client.model.ApplicationFiles;
 import com.kiuwan.client.model.ApplicationResults;
+import com.kiuwan.client.model.AuditResultBean;
 import com.kiuwan.client.model.Defect;
 import com.kiuwan.client.model.File;
 import com.kiuwan.client.model.management.applications.ApplicationBean;
@@ -622,6 +623,25 @@ public class KiuwanRestApiClient {
 		}
 		
 		return userGroups;
+	}
+	
+	public String sendAuditResult(String analysisCode, Boolean passAudit) throws KiuwanClientException{
+		String path = "/auditresults";
+		
+		AuditResultBean auditResultBean = new AuditResultBean();
+		auditResultBean.setAnalysisCode(analysisCode);
+		auditResultBean.setPassAudit(passAudit);
+		
+		Response response = post(path, auditResultBean);
+		checkStatus(response, 200);
+		String resultMessage = null;
+		try {
+			resultMessage = response.readEntity(String.class);
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return resultMessage;
 	}
 	
 	/**
