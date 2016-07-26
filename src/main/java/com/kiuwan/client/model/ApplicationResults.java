@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ApplicationResults {
 
 	protected String name;
@@ -15,6 +19,7 @@ public class ApplicationResults {
 	protected String encoding;
 	protected String analysisCode;
 	protected String analysisURL;
+	protected String auditResultURL;
 	protected String analysisStatus;
 	List<Language> languages = new ArrayList<Language>();
 	String qualityModel;
@@ -67,6 +72,12 @@ public class ApplicationResults {
 	}
 	public void setAnalysisURL(String analysisURL) {
 		this.analysisURL = analysisURL;
+	}
+	public String getAuditResultURL() {
+		return auditResultURL;
+	}
+	public void setAuditResultURL(String auditResultURL) {
+		this.auditResultURL = auditResultURL;
 	}
 	public String getAnalysisStatus() {
 		return analysisStatus;
@@ -125,7 +136,7 @@ public class ApplicationResults {
 	@Override
 	public String toString() {
 		return "ApplicationResults [name=" + name + ", description="
-				+ description + ", URL=" + analysisURL + ", label=" + label + ", date=" + date
+				+ description + ", URL=" + analysisURL + ", auditResultURL=" + auditResultURL + ", label=" + label + ", date=" + date
 				+ ", encoding=" + encoding + ", analysisCode=" + analysisCode
 				+ ", analysisStatus=" + analysisStatus + ", languages=" + languages
 				+ ", qualityModel=" + qualityModel + ", orderedBy=" + orderedBy
