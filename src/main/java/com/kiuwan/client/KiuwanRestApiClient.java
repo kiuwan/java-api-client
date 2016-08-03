@@ -31,9 +31,6 @@ import com.kiuwan.client.model.management.applications.ApplicationBean;
 import com.kiuwan.client.model.management.users.UserBean;
 import com.kiuwan.client.model.management.users.groups.UserGroupBean;
 
-/**
- * This is not a thread-safe client.
- */
 public class KiuwanRestApiClient {
 
 	protected static final String REST_API_BASE_URL = "https://api.kiuwan.com";
@@ -42,9 +39,9 @@ public class KiuwanRestApiClient {
 
 	private WebTarget connection;
 	
-	private static String csrfToken;
+	private String csrfToken;
 	
-	private static Map<String, Cookie> cookies = new HashMap<String, Cookie>();
+	private Map<String, Cookie> cookies = new HashMap<String, Cookie>();
 	
     public KiuwanRestApiClient(String user, String password) {
 		initializeConnection(user, password, REST_API_BASE_URL);
@@ -651,6 +648,9 @@ public class KiuwanRestApiClient {
 	 * @param restApiBaseUrl Base URL for REST-API.
 	 */
 	private void initializeConnection(String user, String password, String restApiBaseUrl) {
+		csrfToken = null;
+		cookies = new HashMap<String, Cookie>();
+		
 		connection = ClientHelper.createClient().register(HttpAuthenticationFeature.basic(user, password)).target(restApiBaseUrl);
 	}
 	
@@ -749,13 +749,13 @@ public class KiuwanRestApiClient {
 	}
 	
 	private void setCookies(Builder request) {
-		for (Cookie cookie : KiuwanRestApiClient.cookies.values()) {
+		for (Cookie cookie : this.cookies.values()) {
 			request.cookie(cookie);
 		}
 	}
 	
 	private void setCsrfToken(Builder request) {
-		String csrfToken = KiuwanRestApiClient.csrfToken;
+		String csrfToken = this.csrfToken;
 		if(csrfToken != null){
 			request.header(CSRF_TOKEN_HEADER, csrfToken);
 		}
@@ -764,14 +764,14 @@ public class KiuwanRestApiClient {
 	private void saveCsrfToken(Response response) {
 		String token = response.getHeaderString(CSRF_TOKEN_HEADER);
 		if(token != null){
-			KiuwanRestApiClient.csrfToken = token;
+			this.csrfToken = token;
 		}
 	}
 	
 	private void saveCookies(Response response) {
 		Map<String, NewCookie> cookies = response.getCookies();
         if(cookies != null){
-        	KiuwanRestApiClient.cookies.putAll(cookies);
+        	this.cookies.putAll(cookies);
         }
 	}
 	
