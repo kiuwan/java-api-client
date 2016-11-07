@@ -27,6 +27,7 @@ import com.kiuwan.client.model.ApplicationResults;
 import com.kiuwan.client.model.AuditResultBean;
 import com.kiuwan.client.model.Defect;
 import com.kiuwan.client.model.File;
+import com.kiuwan.client.model.actionplan.ActionPlanBean;
 import com.kiuwan.client.model.management.applications.ApplicationBean;
 import com.kiuwan.client.model.management.users.UserBean;
 import com.kiuwan.client.model.management.users.groups.UserGroupBean;
@@ -620,6 +621,148 @@ public class KiuwanRestApiClient {
 		}
 		
 		return userGroups;
+	}
+	
+	public List<ActionPlanBean> listActionPlans(String applicationName) throws KiuwanClientException{
+		String path = "/actionPlans";
+		
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("application", new String[]{applicationName});
+		
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		List<ActionPlanBean> actionPlans = new ArrayList<ActionPlanBean>();
+		try {
+			actionPlans = response.readEntity(new GenericType<List<ActionPlanBean>>(){});
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return actionPlans;
+	}
+
+	public ActionPlanBean getActionPlan(String applicationName, String actionPlanName) throws KiuwanClientException{
+		return getActionPlan(applicationName, actionPlanName, null);
+	}
+	
+	public ActionPlanBean getActionPlan(String applicationName, String actionPlanName, String creation) throws KiuwanClientException{
+		String path = "/actionPlan";
+		
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("application", new String[]{applicationName});
+		queryParams.put("name", new String[]{actionPlanName});
+		
+		if(creation != null){
+			queryParams.put("creation", new String[]{creation});
+		}
+		
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		ActionPlanBean actionPlan = null;
+		try {
+			actionPlan = response.readEntity(ActionPlanBean.class);
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return actionPlan;
+	}
+	
+	public ActionPlanBean getAllActionPlanDefects(String applicationName, String actionPlanName) throws KiuwanClientException{
+		return getActionPlanAllDefects(applicationName, actionPlanName, null);
+	}
+	
+	public ActionPlanBean getActionPlanAllDefects(String applicationName, String actionPlanName, String creation) throws KiuwanClientException{
+		String path = "/actionPlan/defects/all";
+		
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("application", new String[]{applicationName});
+		queryParams.put("name", new String[]{actionPlanName});
+		
+		if(creation != null){
+			queryParams.put("creation", new String[]{creation});
+		}
+
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		ActionPlanBean actionPlan = null;
+		try {
+			actionPlan = response.readEntity(ActionPlanBean.class);
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return actionPlan;
+	}
+	
+	public ActionPlanBean getPendingActionPlanDefects(String applicationName, String actionPlanName) throws KiuwanClientException{
+		return getActionPlanPendingDefects(applicationName, actionPlanName, null, null);
+	}
+
+	public ActionPlanBean getActionPlanPendingDefects(String applicationName, String actionPlanName, String analysisLabel) throws KiuwanClientException{
+		return getActionPlanPendingDefects(applicationName, actionPlanName, null, analysisLabel);
+	}
+	
+	public ActionPlanBean getActionPlanPendingDefects(String applicationName, String actionPlanName, String creation, String analysisLabel) throws KiuwanClientException{
+		String path = "/actionPlan/defects/pending";
+		
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("application", new String[]{applicationName});
+		queryParams.put("name", new String[]{actionPlanName});
+		
+		if(creation != null){
+			queryParams.put("creation", new String[]{creation});
+		}
+		
+		if(analysisLabel != null){
+			queryParams.put("analysisLabel", new String[]{analysisLabel});
+		}
+		
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		ActionPlanBean actionPlan = null;
+		try {
+			actionPlan = response.readEntity(ActionPlanBean.class);
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return actionPlan;
+	}
+	
+	public ActionPlanBean getRemovedActionPlanDefects(String applicationName, String actionPlanName) throws KiuwanClientException{
+		return getActionPlanRemovedDefects(applicationName, actionPlanName, null, null);
+	}
+
+	public ActionPlanBean getActionPlanRemovedDefects(String applicationName, String actionPlanName, String analysisLabel) throws KiuwanClientException{
+		return getActionPlanRemovedDefects(applicationName, actionPlanName, null, analysisLabel);
+	}
+	
+	public ActionPlanBean getActionPlanRemovedDefects(String applicationName, String actionPlanName, String creation, String analysisLabel) throws KiuwanClientException{
+		String path = "/actionPlan/defects/removed";
+
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("application", new String[]{applicationName});
+		queryParams.put("name", new String[]{actionPlanName});
+		
+		if(creation != null){
+			queryParams.put("creation", new String[]{creation});
+		}
+		
+		if(analysisLabel != null){
+			queryParams.put("analysisLabel", new String[]{analysisLabel});
+		}
+		
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		ActionPlanBean actionPlan = null;
+		try {
+			actionPlan = response.readEntity(ActionPlanBean.class);
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return actionPlan;
 	}
 	
 	public String sendAuditResult(String analysisCode, Boolean passAudit) throws KiuwanClientException{

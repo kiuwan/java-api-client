@@ -15,10 +15,11 @@ Changes in this version:
 
   - Added audit result URL in ApplicationResults.
 	
-Supported actions are:
+Supported actions are: (New actions marked with *)
 
   - List analyses of an application.
   - List your applications.
+  - List action plans of an application. (*)
   - Get last analysis results from your application.
   - Get all defects from your application.
   - Get files (with metric values and defects) from your application.
@@ -26,6 +27,10 @@ Supported actions are:
   - Get files (with metric values and defects) from your application indicating the analysis code.
   - Get metrics from your application indicating the analysis code.
   - Get the differences of defects between two analysis.
+  - Get basic information of an action plan. (*)
+  - Get all defects in an action plan. (*)
+  - Get pending defects of an action plan. (*)
+  - Get removed defects of an action plan. (*)
   - Create new applications.
   - Create new users in your account.
   - Create new user groups in your account.
@@ -40,6 +45,7 @@ Source code includes examples that shows you how to execute each supported actio
 
   - <a href="src/main/java/com/kiuwan/client/examples/ListAnalyses.java">com.kiuwan.client.examples.ListAnalyses.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/ListApplications.java">com.kiuwan.client.examples.ListApplications.java</a>
+  - <a href="src/main/java/com/kiuwan/client/examples/ListActionPlans.java">com.kiuwan.client.examples.ListActionPlans.java</a> (*)
   - <a href="src/main/java/com/kiuwan/client/examples/ApplicationsResults.java">com.kiuwan.client.examples.ApplicationsResults.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/ApplicationDefects.java">com.kiuwan.client.examples.ApplicationDefects.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/ApplicationFiles.java">com.kiuwan.client.examples.ApplicationFiles.java</a>
@@ -47,6 +53,10 @@ Source code includes examples that shows you how to execute each supported actio
   - <a href="src/main/java/com/kiuwan/client/examples/AnalysisFiles.java">com.kiuwan.client.examples.AnalysisFiles.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/AnalysisMetrics.java">com.kiuwan.client.examples.AnalysisMetrics.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/CompareAnalysisDefects.java">com.kiuwan.client.examples.CompareAnalysisDefects.java</a>
+  - <a href="src/main/java/com/kiuwan/client/examples/GetActionPlanInfo.java">com.kiuwan.client.examples.GetActionPlanInfo.java</a> (*)
+  - <a href="src/main/java/com/kiuwan/client/examples/GetAllActionPlanDefects.java">com.kiuwan.client.examples.GetAllActionPlanDefects.java</a> (*)
+  - <a href="src/main/java/com/kiuwan/client/examples/GetPendingActionPlanDefects.java">com.kiuwan.client.examples.GetPendingActionPlanDefects.java</a> (*)
+  - <a href="src/main/java/com/kiuwan/client/examples/GetRemovedActionPlanDefects.java">com.kiuwan.client.examples.GetRemovedActionPlanDefects.java</a> (*)  
   - <a href="src/main/java/com/kiuwan/client/examples/CreateApplications.java">com.kiuwan.client.examples.CreateApplications.java</a> 
   - <a href="src/main/java/com/kiuwan/client/examples/CreateUsers.java">com.kiuwan.client.examples.CreateUsers.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/CreateUserGroups.java">com.kiuwan.client.examples.CreateUserGroups.java</a>
