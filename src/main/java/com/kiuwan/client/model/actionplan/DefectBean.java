@@ -132,7 +132,7 @@ public class DefectBean {
 	 */
 	@Override
 	public String toString() {
-		return ClassToStringConverter.toString("Defect", this);
+		return ClassToStringConverter.toString("Defect", this)+"\n";
 	}
 	
 }
