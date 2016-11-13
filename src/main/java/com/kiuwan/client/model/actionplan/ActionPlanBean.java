@@ -1,6 +1,5 @@
 package com.kiuwan.client.model.actionplan;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +24,6 @@ public class ActionPlanBean {
 	private String estimate;
 	private String pendingEffort;
 
-	private Map<String, Double> targets;
-	
 	private Double riskIndexBefore;
 	private Double globalIndicatorBefore;
 	private Double effortToTargetBefore;
@@ -153,20 +150,6 @@ public class ActionPlanBean {
 	 */
 	public void setPendingEffort(String pendingEffort) {
 		this.pendingEffort = pendingEffort;
-	}
-
-	/**
-	 * @return the targets
-	 */
-	public Map<String, Double> getTargets() {
-		return targets;
-	}
-
-	/**
-	 * @param targets the targets to set
-	 */
-	public void setTargets(Map<String, Double> targets) {
-		this.targets = targets;
 	}
 
 	/**
