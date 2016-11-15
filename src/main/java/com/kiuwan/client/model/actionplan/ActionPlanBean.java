@@ -16,6 +16,7 @@ import com.kiuwan.client.utils.ClassToStringConverter;
 public class ActionPlanBean {
 
 	private String name;
+	private String description;
 	private String creation;
 	private String expiration;
 	private String createdBy;
@@ -52,6 +53,20 @@ public class ActionPlanBean {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	/**
