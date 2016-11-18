@@ -28,6 +28,7 @@ import com.kiuwan.client.model.AuditResultBean;
 import com.kiuwan.client.model.Defect;
 import com.kiuwan.client.model.File;
 import com.kiuwan.client.model.actionplan.ActionPlanBean;
+import com.kiuwan.client.model.management.PortfolioDefinitionBean;
 import com.kiuwan.client.model.management.applications.ApplicationBean;
 import com.kiuwan.client.model.management.users.UserBean;
 import com.kiuwan.client.model.management.users.groups.UserGroupBean;
@@ -621,6 +622,21 @@ public class KiuwanRestApiClient {
 		}
 		
 		return userGroups;
+	}
+
+	public List<PortfolioDefinitionBean> listPortfolioDefinitions() throws KiuwanClientException{
+		String path = "/portfolios";
+		
+		Response response = get(path);
+		checkStatus(response, 200);
+		List<PortfolioDefinitionBean> portfolioDefinitions = new ArrayList<PortfolioDefinitionBean>();
+		try {
+			portfolioDefinitions = response.readEntity(new GenericType<List<PortfolioDefinitionBean>>(){});
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return portfolioDefinitions;
 	}
 	
 	public List<ActionPlanBean> listActionPlans(String applicationName) throws KiuwanClientException{

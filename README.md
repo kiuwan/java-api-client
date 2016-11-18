@@ -10,16 +10,13 @@ Maven configuration:
 		<artifactId>java-api-client</artifactId>
 		<version>0.1.0</version>
 	</dependency>
-	
-Changes in this version:
+		
+Supported actions are: (New actions added in this version are marked with *)
 
-  - Added audit result URL in ApplicationResults.
-	
-Supported actions are: (New actions marked with *)
-
-  - List analyses of an application.
-  - List your applications.
   - List action plans of an application. (*)
+  - List analyses of an application.
+  - List portfolio definitions of an account. (*)
+  - List your applications.
   - Get last analysis results from your application.
   - Get all defects from your application.
   - Get files (with metric values and defects) from your application.
@@ -43,9 +40,10 @@ Supported actions are: (New actions marked with *)
   
 Source code includes examples that shows you how to execute each supported action.
 
-  - <a href="src/main/java/com/kiuwan/client/examples/ListAnalyses.java">com.kiuwan.client.examples.ListAnalyses.java</a>
-  - <a href="src/main/java/com/kiuwan/client/examples/ListApplications.java">com.kiuwan.client.examples.ListApplications.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/ListActionPlans.java">com.kiuwan.client.examples.ListActionPlans.java</a> (*)
+  - <a href="src/main/java/com/kiuwan/client/examples/ListAnalyses.java">com.kiuwan.client.examples.ListAnalyses.java</a>
+  - <a href="src/main/java/com/kiuwan/client/examples/ListActionPlans.java">com.kiuwan.client.examples.ListPortfolioDefinitions.java</a> (*)
+  - <a href="src/main/java/com/kiuwan/client/examples/ListApplications.java">com.kiuwan.client.examples.ListApplications.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/ApplicationsResults.java">com.kiuwan.client.examples.ApplicationsResults.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/ApplicationDefects.java">com.kiuwan.client.examples.ApplicationDefects.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/ApplicationFiles.java">com.kiuwan.client.examples.ApplicationFiles.java</a>
