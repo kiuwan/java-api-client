@@ -28,6 +28,7 @@ Supported actions are: (New actions added in this version are marked with *)
   - Get all defects in an action plan. (*)
   - Get pending defects of an action plan. (*)
   - Get removed defects of an action plan. (*)
+  - Get rule documentation. (*)
   - Create new applications.
   - Create new users in your account.
   - Create new user groups in your account.
@@ -54,7 +55,8 @@ Source code includes examples that shows you how to execute each supported actio
   - <a href="src/main/java/com/kiuwan/client/examples/GetActionPlanInfo.java">com.kiuwan.client.examples.GetActionPlanInfo.java</a> (*)
   - <a href="src/main/java/com/kiuwan/client/examples/GetAllActionPlanDefects.java">com.kiuwan.client.examples.GetAllActionPlanDefects.java</a> (*)
   - <a href="src/main/java/com/kiuwan/client/examples/GetPendingActionPlanDefects.java">com.kiuwan.client.examples.GetPendingActionPlanDefects.java</a> (*)
-  - <a href="src/main/java/com/kiuwan/client/examples/GetRemovedActionPlanDefects.java">com.kiuwan.client.examples.GetRemovedActionPlanDefects.java</a> (*)  
+  - <a href="src/main/java/com/kiuwan/client/examples/GetRemovedActionPlanDefects.java">com.kiuwan.client.examples.GetRemovedActionPlanDefects.java</a> (*)
+  - <a href="src/main/java/com/kiuwan/client/examples/GetRemovedActionPlanDefects.java">com.kiuwan.client.examples.GetRuleDocumentation.java</a> (*)  
   - <a href="src/main/java/com/kiuwan/client/examples/CreateApplications.java">com.kiuwan.client.examples.CreateApplications.java</a> 
   - <a href="src/main/java/com/kiuwan/client/examples/CreateUsers.java">com.kiuwan.client.examples.CreateUsers.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/CreateUserGroups.java">com.kiuwan.client.examples.CreateUserGroups.java</a>

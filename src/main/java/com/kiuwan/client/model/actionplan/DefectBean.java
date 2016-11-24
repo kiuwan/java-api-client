@@ -29,6 +29,10 @@ public class DefectBean {
 	
 	private DefectFileBean file;
 
+	private String ruleCode;
+	
+	private Long modelId;
+	
 	/**
 	 * @return the rule
 	 */
@@ -127,6 +131,34 @@ public class DefectBean {
 		this.file = file;
 	}
 	
+	/**
+	 * @return the ruleCode
+	 */
+	public String getRuleCode() {
+		return ruleCode;
+	}
+
+	/**
+	 * @param ruleCode the ruleCode to set
+	 */
+	public void setRuleCode(String ruleCode) {
+		this.ruleCode = ruleCode;
+	}
+
+	/**
+	 * @return the modelId
+	 */
+	public Long getModelId() {
+		return modelId;
+	}
+
+	/**
+	 * @param modelId the modelId to set
+	 */
+	public void setModelId(Long modelId) {
+		this.modelId = modelId;
+	}
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */

@@ -18,6 +18,8 @@ public class Defect {
 	protected String file;
 	protected Long line;
 	protected String code;
+	protected String ruleCode;
+	protected Long modelId;
 	public String getLanguage() {
 		return language;
 	}
@@ -66,12 +68,24 @@ public class Defect {
 	public void setCode(String code) {
 		this.code = code;
 	}
+	public String getRuleCode() {
+		return ruleCode;
+	}
+	public void setRuleCode(String ruleCode) {
+		this.ruleCode = ruleCode;
+	}
+	public Long getModelId() {
+		return modelId;
+	}
+	public void setModelId(Long modelId) {
+		this.modelId = modelId;
+	}
 	@Override
 	public String toString() {
 		return "Defect [language=" + language + ", characteristic="
 				+ characteristic + ", priority=" + priority + ", effort="
 				+ effort + ", rule=" + rule + ", file=" + file + ", line="
-				+ line + ", code=" + code + "]";
+				+ line + ", code=" + code + ", ruleCode=" + ruleCode + ", modelId=" + modelId + "]";
 	}
 	
 }

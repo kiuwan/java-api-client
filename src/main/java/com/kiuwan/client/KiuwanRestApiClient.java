@@ -28,6 +28,7 @@ import com.kiuwan.client.model.AuditResultBean;
 import com.kiuwan.client.model.Defect;
 import com.kiuwan.client.model.File;
 import com.kiuwan.client.model.actionplan.ActionPlanBean;
+import com.kiuwan.client.model.doc.RuleDocumentationBean;
 import com.kiuwan.client.model.management.PortfolioDefinitionBean;
 import com.kiuwan.client.model.management.applications.ApplicationBean;
 import com.kiuwan.client.model.management.users.UserBean;
@@ -781,6 +782,26 @@ public class KiuwanRestApiClient {
 		return actionPlan;
 	}
 	
+	public RuleDocumentationBean getRuleDocumentation(String applicationName, String modelId, String ruleCode) throws KiuwanClientException{
+		String path = "/doc/rule";
+
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("application", new String[]{applicationName});
+		queryParams.put("modelId", new String[]{modelId});
+		queryParams.put("code", new String[]{ruleCode});
+		
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		RuleDocumentationBean ruleDocumentation = null;
+		try {
+			ruleDocumentation = response.readEntity(RuleDocumentationBean.class);
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return ruleDocumentation;
+	}
+
 	public String sendAuditResult(String analysisCode, Boolean passAudit) throws KiuwanClientException{
 		String path = "/auditresults";
 		
