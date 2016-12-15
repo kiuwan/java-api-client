@@ -38,7 +38,17 @@ public class MetricValue {
 	}
 	@Override
 	public String toString() {
-		return "MetricValue [name=" + name + ", value=" + value + "]";
+		String childrenString = "";
+		if(children != null && !children.isEmpty()){
+			childrenString = ", children="+children;
+		}
+		
+		if(name != null){
+			return "MetricValue [name=" + name + ", value=" + value +childrenString+"]";
+		}
+		else{
+			return "[value=" + value + childrenString+"]";
+		}
 	}
 	
 	

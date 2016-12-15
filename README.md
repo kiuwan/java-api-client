@@ -15,6 +15,7 @@ Supported actions are: (New actions added in this version are marked with *)
 
   - List action plans of an application. (*)
   - List analyses of an application.
+  - List deliveries of an application. (*)
   - List portfolio definitions of an account. (*)
   - List your applications.
   - Get last analysis results from your application.
@@ -26,6 +27,9 @@ Supported actions are: (New actions added in this version are marked with *)
   - Get the differences of defects between two analysis.
   - Get basic information of an action plan. (*)
   - Get all defects in an action plan. (*)
+  - Get the defects that did not make to pass a checkpoint. (*)
+  - Get the files for a concrete rule that did not pass a checkpoint. (*)
+  - Get delivery details. (*)
   - Get pending defects of an action plan. (*)
   - Get removed defects of an action plan. (*)
   - Get rule documentation. (*)
@@ -43,6 +47,7 @@ Source code includes examples that shows you how to execute each supported actio
 
   - <a href="src/main/java/com/kiuwan/client/examples/ListActionPlans.java">com.kiuwan.client.examples.ListActionPlans.java</a> (*)
   - <a href="src/main/java/com/kiuwan/client/examples/ListAnalyses.java">com.kiuwan.client.examples.ListAnalyses.java</a>
+  - <a href="src/main/java/com/kiuwan/client/examples/ListDeliveries.java">com.kiuwan.client.examples.ListDeliveries</a> (*)
   - <a href="src/main/java/com/kiuwan/client/examples/ListActionPlans.java">com.kiuwan.client.examples.ListPortfolioDefinitions.java</a> (*)
   - <a href="src/main/java/com/kiuwan/client/examples/ListApplications.java">com.kiuwan.client.examples.ListApplications.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/ApplicationsResults.java">com.kiuwan.client.examples.ApplicationsResults.java</a>
@@ -54,6 +59,9 @@ Source code includes examples that shows you how to execute each supported actio
   - <a href="src/main/java/com/kiuwan/client/examples/CompareAnalysisDefects.java">com.kiuwan.client.examples.CompareAnalysisDefects.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/GetActionPlanInfo.java">com.kiuwan.client.examples.GetActionPlanInfo.java</a> (*)
   - <a href="src/main/java/com/kiuwan/client/examples/GetAllActionPlanDefects.java">com.kiuwan.client.examples.GetAllActionPlanDefects.java</a> (*)
+  - <a href="src/main/java/com/kiuwan/client/examples/GetCheckpointDefects.java">com.kiuwan.client.examples.GetCheckpointDefects.java</a> (*) 
+  - <a href="src/main/java/com/kiuwan/client/examples/GetCheckpointFilesWithDefects.java">com.kiuwan.client.examples.GetCheckpointFilesWithDefects.java</a> (*)
+  - <a href="src/main/java/com/kiuwan/client/examples/GetDeliveryDetails.java">com.kiuwan.client.examples.GetDeliveryDetails.java</a> (*)
   - <a href="src/main/java/com/kiuwan/client/examples/GetPendingActionPlanDefects.java">com.kiuwan.client.examples.GetPendingActionPlanDefects.java</a> (*)
   - <a href="src/main/java/com/kiuwan/client/examples/GetRemovedActionPlanDefects.java">com.kiuwan.client.examples.GetRemovedActionPlanDefects.java</a> (*)
   - <a href="src/main/java/com/kiuwan/client/examples/GetRemovedActionPlanDefects.java">com.kiuwan.client.examples.GetRuleDocumentation.java</a> (*)  

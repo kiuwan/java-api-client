@@ -1,6 +1,8 @@
 package com.kiuwan.client;
 
+import java.io.UnsupportedEncodingException;
 import java.net.Proxy;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,10 +26,14 @@ import com.kiuwan.client.model.Application;
 import com.kiuwan.client.model.ApplicationDefects;
 import com.kiuwan.client.model.ApplicationFiles;
 import com.kiuwan.client.model.ApplicationResults;
-import com.kiuwan.client.model.AuditResultBean;
 import com.kiuwan.client.model.Defect;
 import com.kiuwan.client.model.File;
 import com.kiuwan.client.model.actionplan.ActionPlanBean;
+import com.kiuwan.client.model.audit.AuditResultAssignationBean;
+import com.kiuwan.client.model.audit.CheckpointDefectBean;
+import com.kiuwan.client.model.audit.CheckpointFileWithDefectsBean;
+import com.kiuwan.client.model.delivery.DeliveryBean;
+import com.kiuwan.client.model.delivery.DeliveryDetailsBean;
 import com.kiuwan.client.model.doc.RuleDocumentationBean;
 import com.kiuwan.client.model.management.PortfolioDefinitionBean;
 import com.kiuwan.client.model.management.applications.ApplicationBean;
@@ -376,6 +382,19 @@ public class KiuwanRestApiClient {
 		checkStatus(response, 200);
         try {
             return response.readEntity(new GenericType<List<AnalysisBean>>(){});
+        } catch (Exception e) {
+        	throw new KiuwanClientException(e);
+        }
+	}
+	
+	public List<DeliveryBean> getDeliveries(String application) throws KiuwanClientException{
+		String path = "/apps/" + application + "/deliveries";
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+        try {
+            return response.readEntity(new GenericType<List<DeliveryBean>>(){});
         } catch (Exception e) {
         	throw new KiuwanClientException(e);
         }
@@ -802,10 +821,94 @@ public class KiuwanRestApiClient {
 		return ruleDocumentation;
 	}
 
+	public DeliveryDetailsBean getDeliveryDetails(String applicationName, String changeRequest, String label) throws KiuwanClientException{
+		String path;
+		try {
+			path = "/apps/"+URLEncoder.encode(applicationName, "UTF-8")+"/deliveries";
+		} catch (UnsupportedEncodingException unsupportedEncodingException) {
+			throw new KiuwanClientException(unsupportedEncodingException);
+		}
+
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("changeRequest", new String[]{changeRequest});
+		queryParams.put("label", new String[]{label});
+		
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		DeliveryDetailsBean deliveryResult = null;
+		try {
+			deliveryResult = response.readEntity(DeliveryDetailsBean.class);
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return deliveryResult;
+	} 
+	
+	public DeliveryDetailsBean getDeliveryDetails(String deliveryCode) throws KiuwanClientException{
+		String path = "/deliveries/"+deliveryCode;
+
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		DeliveryDetailsBean deliveryResult = null;
+		try {
+			deliveryResult = response.readEntity(DeliveryDetailsBean.class);
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return deliveryResult;
+	} 
+	
+	public List<CheckpointFileWithDefectsBean> getCheckpointFilesWithDefects(String applicationName, String deliveryCode, String ruleCode, String checkpointId) throws KiuwanClientException{
+		String path = "/audits/checkpoints/violatedrules/files";
+
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("application", new String[]{applicationName});
+		queryParams.put("deliveryCode", new String[]{deliveryCode});
+		queryParams.put("ruleCode", new String[]{ruleCode});
+		queryParams.put("checkpoint", new String[]{checkpointId});
+		
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		List<CheckpointFileWithDefectsBean> files = new ArrayList<CheckpointFileWithDefectsBean>();
+		try {
+			files = response.readEntity(new GenericType<List<CheckpointFileWithDefectsBean>>(){});
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return files;
+	} 	
+	
+	public List<CheckpointDefectBean> getCheckpointDefects(String applicationName, String deliveryCode, String ruleCode, String checkpointId, String fileName) throws KiuwanClientException{
+		String path = "/audits/checkpoints/violatedrules/files/defects";
+
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("application", new String[]{applicationName});
+		queryParams.put("deliveryCode", new String[]{deliveryCode});
+		queryParams.put("ruleCode", new String[]{ruleCode});
+		queryParams.put("checkpoint", new String[]{checkpointId});
+		queryParams.put("file", new String[]{fileName});
+		
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		List<CheckpointDefectBean> defects = new ArrayList<CheckpointDefectBean>();
+		try {
+			defects = response.readEntity(new GenericType<List<CheckpointDefectBean>>(){});
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return defects;
+	} 	
+	
 	public String sendAuditResult(String analysisCode, Boolean passAudit) throws KiuwanClientException{
 		String path = "/auditresults";
 		
-		AuditResultBean auditResultBean = new AuditResultBean();
+		AuditResultAssignationBean auditResultBean = new AuditResultAssignationBean();
 		auditResultBean.setAnalysisCode(analysisCode);
 		auditResultBean.setPassAudit(passAudit);
 		

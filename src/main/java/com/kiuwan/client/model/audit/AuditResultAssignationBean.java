@@ -1,17 +1,14 @@
-package com.kiuwan.client.model;
+package com.kiuwan.client.model.audit;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-/**
- * Bean containing the app's information.
- */
 @XmlRootElement
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AuditResultBean {
+public class AuditResultAssignationBean {
 
 	private String analysisCode;
 	private Boolean passAudit;
