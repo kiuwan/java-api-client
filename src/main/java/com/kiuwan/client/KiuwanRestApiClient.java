@@ -39,6 +39,9 @@ import com.kiuwan.client.model.management.PortfolioDefinitionBean;
 import com.kiuwan.client.model.management.applications.ApplicationBean;
 import com.kiuwan.client.model.management.users.UserBean;
 import com.kiuwan.client.model.management.users.groups.UserGroupBean;
+import com.kiuwan.client.model.violatedrule.DefectBean;
+import com.kiuwan.client.model.violatedrule.FileWithDefectsBean;
+import com.kiuwan.client.model.violatedrule.ViolatedRuleBean;
 
 public class KiuwanRestApiClient {
 
@@ -923,6 +926,84 @@ public class KiuwanRestApiClient {
 		
 		return resultMessage;
 	}
+
+	public List<ViolatedRuleBean> getViolatedRulesForApplication(String applicationName) throws KiuwanClientException{
+		String path = "/violatedrules";
+
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("application", new String[]{applicationName});
+		
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		List<ViolatedRuleBean> violatedRules = new ArrayList<ViolatedRuleBean>();
+		try {
+			violatedRules = response.readEntity(new GenericType<List<ViolatedRuleBean>>(){});
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return violatedRules;
+	} 
+	
+	public List<ViolatedRuleBean> getViolatedRules(String applicationName, String analysisCode) throws KiuwanClientException{
+		String path = "/violatedrules";
+
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("application", new String[]{applicationName});
+		queryParams.put("analysisCode", new String[]{analysisCode});
+		
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		List<ViolatedRuleBean> violatedRules = new ArrayList<ViolatedRuleBean>();
+		try {
+			violatedRules = response.readEntity(new GenericType<List<ViolatedRuleBean>>(){});
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return violatedRules;
+	} 
+	
+	public List<FileWithDefectsBean> getViolatedRuleFiles(String applicationName, String analysisCode, String ruleCode) throws KiuwanClientException{
+		String path = "/violatedrules/files";
+
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("application", new String[]{applicationName});
+		queryParams.put("analysisCode", new String[]{analysisCode});
+		queryParams.put("ruleCode", new String[]{ruleCode});
+		
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		List<FileWithDefectsBean> files = new ArrayList<FileWithDefectsBean>();
+		try {
+			files = response.readEntity(new GenericType<List<FileWithDefectsBean>>(){});
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return files;
+	} 
+	
+	public List<DefectBean> getViolatedRuleFileDefects(String applicationName, String analysisCode, String ruleCode, String file) throws KiuwanClientException{
+		String path = "/violatedrules/files/defects";
+
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("application", new String[]{applicationName});
+		queryParams.put("analysisCode", new String[]{analysisCode});
+		queryParams.put("ruleCode", new String[]{ruleCode});
+		queryParams.put("file", new String[]{file});
+		
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		List<DefectBean> files = new ArrayList<DefectBean>();
+		try {
+			files = response.readEntity(new GenericType<List<DefectBean>>(){});
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return files;
+	} 
 	
 	/**
 	 * Initializes the connection.

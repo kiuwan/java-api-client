@@ -6,6 +6,10 @@ import com.kiuwan.client.KiuwanClientException;
 import com.kiuwan.client.KiuwanRestApiClient;
 import com.kiuwan.client.model.Defect;
 
+/**
+ * @deprecated Use com.kiuwan.client.examples.GetViolatedRulesForApplication for more efficient data retrieval
+ */
+@Deprecated
 public class ApplicationDefects {
 
 	/**

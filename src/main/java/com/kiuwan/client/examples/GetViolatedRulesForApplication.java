@@ -4,13 +4,9 @@ import java.util.List;
 
 import com.kiuwan.client.KiuwanClientException;
 import com.kiuwan.client.KiuwanRestApiClient;
-import com.kiuwan.client.model.Defect;
+import com.kiuwan.client.model.violatedrule.ViolatedRuleBean;
 
-/**
- * @deprecated Use com.kiuwan.client.examples.GetViolatedRules for more efficient data retrieval
- */
-@Deprecated
-public class AnalysisDefects {
+public class GetViolatedRulesForApplication {
 
 	/**
 	 * @param args
@@ -19,21 +15,20 @@ public class AnalysisDefects {
 		
 		if(args.length != 3)
 	    {
-	        System.out.println("You need to pass 3 parameters: username password analysisCode");
+	        System.out.println("You need to pass 3 parameters: username password applicationName");
 	        return;
 	    }
 		
 		String username = args[0];
 		String password = args[1];
-		String analysisCode = args[2];
+		String applicationName = args[2];
 		
 		KiuwanRestApiClient client = new KiuwanRestApiClient(username, password);
-		//client.activateLog();
 
 		try {
-			List<Defect> defects = client.getAllAnalysisDefects(analysisCode);
-			for (Defect defect: defects) {
-				System.out.println(defect);
+			List<ViolatedRuleBean> violatedRules = client.getViolatedRulesForApplication(applicationName);
+			for (ViolatedRuleBean violatedRuleBean : violatedRules) {
+				System.out.println(violatedRuleBean);
 			}
 		} catch (KiuwanClientException e) {
 			e.printStackTrace();
