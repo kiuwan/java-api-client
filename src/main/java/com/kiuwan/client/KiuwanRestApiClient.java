@@ -707,7 +707,12 @@ public class KiuwanRestApiClient {
 		return actionPlan;
 	}
 	
+	@Deprecated
 	public ActionPlanBean getAllActionPlanDefects(String applicationName, String actionPlanName) throws KiuwanClientException{
+		return getActionPlanAllDefects(applicationName, actionPlanName, null);
+	}
+	
+	public ActionPlanBean getActionPlanAllDefects(String applicationName, String actionPlanName) throws KiuwanClientException{
 		return getActionPlanAllDefects(applicationName, actionPlanName, null);
 	}
 	
@@ -734,7 +739,12 @@ public class KiuwanRestApiClient {
 		return actionPlan;
 	}
 	
+	@Deprecated
 	public ActionPlanBean getPendingActionPlanDefects(String applicationName, String actionPlanName) throws KiuwanClientException{
+		return getActionPlanPendingDefects(applicationName, actionPlanName, null, null);
+	}
+	
+	public ActionPlanBean getActionPlanPendingDefects(String applicationName, String actionPlanName) throws KiuwanClientException{
 		return getActionPlanPendingDefects(applicationName, actionPlanName, null, null);
 	}
 
@@ -769,10 +779,15 @@ public class KiuwanRestApiClient {
 		return actionPlan;
 	}
 	
+	@Deprecated
 	public ActionPlanBean getRemovedActionPlanDefects(String applicationName, String actionPlanName) throws KiuwanClientException{
 		return getActionPlanRemovedDefects(applicationName, actionPlanName, null, null);
 	}
 
+	public ActionPlanBean getActionPlanRemovedDefects(String applicationName, String actionPlanName) throws KiuwanClientException{
+		return getActionPlanRemovedDefects(applicationName, actionPlanName, null, null);
+	}
+	
 	public ActionPlanBean getActionPlanRemovedDefects(String applicationName, String actionPlanName, String analysisLabel) throws KiuwanClientException{
 		return getActionPlanRemovedDefects(applicationName, actionPlanName, null, analysisLabel);
 	}
@@ -823,6 +838,29 @@ public class KiuwanRestApiClient {
 		
 		return ruleDocumentation;
 	}
+	
+	public DeliveryDetailsBean getDeliveryDetails(String applicationName, String changeRequest) throws KiuwanClientException{
+		String path;
+		try {
+			path = "/apps/"+URLEncoder.encode(applicationName, "UTF-8")+"/deliveries";
+		} catch (UnsupportedEncodingException unsupportedEncodingException) {
+			throw new KiuwanClientException(unsupportedEncodingException);
+		}
+
+		Map<String, String[]> queryParams = new HashMap<String, String[]>();
+		queryParams.put("changeRequest", new String[]{changeRequest});
+		
+		Response response = get(path, queryParams);
+		checkStatus(response, 200);
+		DeliveryDetailsBean deliveryResult = null;
+		try {
+			deliveryResult = response.readEntity(DeliveryDetailsBean.class);
+		} catch (Exception e) {
+			throw new KiuwanClientException("Unknown error");
+		}
+		
+		return deliveryResult;
+	} 
 
 	public DeliveryDetailsBean getDeliveryDetails(String applicationName, String changeRequest, String label) throws KiuwanClientException{
 		String path;

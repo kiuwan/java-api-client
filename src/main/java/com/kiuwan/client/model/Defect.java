@@ -19,6 +19,7 @@ public class Defect {
 	protected Long line;
 	protected String code;
 	protected String ruleCode;
+	protected Boolean muted;
 	protected Long modelId;
 	public String getLanguage() {
 		return language;
@@ -74,6 +75,12 @@ public class Defect {
 	public void setRuleCode(String ruleCode) {
 		this.ruleCode = ruleCode;
 	}
+	public Boolean getMuted() {
+		return muted;
+	}
+	public void setMuted(Boolean muted) {
+		this.muted = muted;
+	}
 	public Long getModelId() {
 		return modelId;
 	}
@@ -85,7 +92,7 @@ public class Defect {
 		return "Defect [language=" + language + ", characteristic="
 				+ characteristic + ", priority=" + priority + ", effort="
 				+ effort + ", rule=" + rule + ", file=" + file + ", line="
-				+ line + ", code=" + code + ", ruleCode=" + ruleCode + ", modelId=" + modelId + "]";
+				+ line + ", code=" + code + ", ruleCode=" + ruleCode + ", muted=" + muted + ", modelId=" + modelId + "]";
 	}
 	
 }

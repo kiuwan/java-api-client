@@ -14,6 +14,7 @@ public class DefectBean {
 
 	private String code;
 	private Integer line;
+	private Boolean muted;
 	
 	/**
 	 * @return the code
@@ -43,6 +44,20 @@ public class DefectBean {
 		this.line = line;
 	}
 	
+	/**
+	 * @return the muted
+	 */
+	public Boolean getMuted() {
+		return muted;
+	}
+
+	/**
+	 * @param muted the muted to set
+	 */
+	public void setMuted(Boolean muted) {
+		this.muted = muted;
+	}
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */

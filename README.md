@@ -8,7 +8,7 @@ Maven configuration:
 	<dependency>
 		<groupId>com.kiuwan</groupId>
 		<artifactId>java-api-client</artifactId>
-		<version>0.1.1</version>
+		<version>0.1.2</version>
 	</dependency>
 		
 Supported actions are: (New actions added in this version are marked with *)

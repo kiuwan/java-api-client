@@ -25,7 +25,7 @@ public class DefectBean {
 	
 	private String effort;
 	
-	private Boolean suppressed;
+	private Boolean muted;
 	
 	private DefectFileBean file;
 
@@ -104,17 +104,17 @@ public class DefectBean {
 	}
 	
 	/**
-	 * @return the suppressed
+	 * @return the muted
 	 */
-	public Boolean getSuppressed() {
-		return suppressed;
+	public Boolean getMuted() {
+		return muted;
 	}
 
 	/**
-	 * @param suppressed the suppressed to set
+	 * @param muted the muted to set
 	 */
-	public void setSuppressed(Boolean suppressed) {
-		this.suppressed = suppressed;
+	public void setMuted(Boolean muted) {
+		this.muted = muted;
 	}
 
 	/**
