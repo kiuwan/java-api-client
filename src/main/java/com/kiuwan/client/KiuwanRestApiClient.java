@@ -1,8 +1,8 @@
 package com.kiuwan.client;
 
-import java.io.UnsupportedEncodingException;
 import java.net.Proxy;
-import java.net.URLEncoder;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -842,9 +842,9 @@ public class KiuwanRestApiClient {
 	public DeliveryDetailsBean getDeliveryDetails(String applicationName, String changeRequest) throws KiuwanClientException{
 		String path;
 		try {
-			path = "/apps/"+URLEncoder.encode(applicationName, "UTF-8")+"/deliveries";
-		} catch (UnsupportedEncodingException unsupportedEncodingException) {
-			throw new KiuwanClientException(unsupportedEncodingException);
+			path = new URI(null, null, "/apps/"+applicationName+"/deliveries", null).getRawPath();
+		} catch (URISyntaxException uriSyntaxException) {
+			throw new KiuwanClientException(uriSyntaxException);
 		}
 
 		Map<String, String[]> queryParams = new HashMap<String, String[]>();
@@ -865,9 +865,9 @@ public class KiuwanRestApiClient {
 	public DeliveryDetailsBean getDeliveryDetails(String applicationName, String changeRequest, String label) throws KiuwanClientException{
 		String path;
 		try {
-			path = "/apps/"+URLEncoder.encode(applicationName, "UTF-8")+"/deliveries";
-		} catch (UnsupportedEncodingException unsupportedEncodingException) {
-			throw new KiuwanClientException(unsupportedEncodingException);
+			path = new URI(null, null, "/apps/"+applicationName+"/deliveries", null).getRawPath();
+		} catch (URISyntaxException uriSyntaxException) {
+			throw new KiuwanClientException(uriSyntaxException);
 		}
 
 		Map<String, String[]> queryParams = new HashMap<String, String[]>();
