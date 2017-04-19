@@ -1,7 +1,9 @@
 package com.kiuwan.client.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -42,6 +44,9 @@ public class AnalysisBean {
 	private String status;
 	private String errorCode;
 	private List<UnparsedFileBean> unparsedFiles = new ArrayList<UnparsedFileBean>();
+	private String analysisBusinessValue;
+	private String analysisProvider;
+	private Map<String, String> analysisPortfolios = new HashMap<String, String>();
 	
 	/**
 	 * @return the code
@@ -167,6 +172,48 @@ public class AnalysisBean {
 	 */
 	public void setUnparsedFiles(List<UnparsedFileBean> unparsedFiles) {
 		this.unparsedFiles = unparsedFiles;
+	}
+
+	/**
+	 * @return the analysisBusinessValue
+	 */
+	public String getAnalysisBusinessValue() {
+		return analysisBusinessValue;
+	}
+
+	/**
+	 * @param analysisBusinessValue the analysisBusinessValue to set
+	 */
+	public void setAnalysisBusinessValue(String analysisBusinessValue) {
+		this.analysisBusinessValue = analysisBusinessValue;
+	}
+
+	/**
+	 * @return the analysisProvider
+	 */
+	public String getAnalysisProvider() {
+		return analysisProvider;
+	}
+
+	/**
+	 * @param analysisProvider the analysisProvider to set
+	 */
+	public void setAnalysisProvider(String analysisProvider) {
+		this.analysisProvider = analysisProvider;
+	}
+
+	/**
+	 * @return the analysisPortfolios
+	 */
+	public Map<String, String> getAnalysisPortfolios() {
+		return analysisPortfolios;
+	}
+
+	/**
+	 * @param analysisPortfolios the analysisPortfolios to set
+	 */
+	public void setAnalysisPortfolios(Map<String, String> analysisPortfolios) {
+		this.analysisPortfolios = analysisPortfolios;
 	}
 
 	@Override
