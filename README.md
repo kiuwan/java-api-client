@@ -8,10 +8,10 @@ Maven configuration:
 	<dependency>
 		<groupId>com.kiuwan</groupId>
 		<artifactId>java-api-client</artifactId>
-		<version>0.1.2</version>
+		<version>0.1.3</version>
 	</dependency>
 		
-Supported actions are: (New actions added in this version are marked with *)
+Supported actions are:
 
   - List action plans of an application.
   - List analyses of an application.
@@ -33,10 +33,10 @@ Supported actions are: (New actions added in this version are marked with *)
   - Get pending defects of an action plan.
   - Get removed defects of an action plan.
   - Get rule documentation.
-  - Get violated rules of an analysis. (*)
-  - Get files of a violated rule in an analysis. (*)
-  - Get defects of a file with defect of an analysis. (*)
-  - Get violated rules of last analysis of an application. (*)
+  - Get violated rules of an analysis.
+  - Get files of a violated rule in an analysis. 
+  - Get defects of a file with defect of an analysis. 
+  - Get violated rules of last analysis of an application.
   - Create new applications.
   - Create new users in your account.
   - Create new user groups in your account.
@@ -69,10 +69,10 @@ Source code includes examples that shows you how to execute each supported actio
   - <a href="src/main/java/com/kiuwan/client/examples/GetPendingActionPlanDefects.java">com.kiuwan.client.examples.GetPendingActionPlanDefects.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/GetRemovedActionPlanDefects.java">com.kiuwan.client.examples.GetRemovedActionPlanDefects.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/GetRemovedActionPlanDefects.java">com.kiuwan.client.examples.GetRuleDocumentation.java</a>
-  - <a href="src/main/java/com/kiuwan/client/examples/GetViolatedRules.java">com.kiuwan.client.examples.GetViolatedRules.java</a> (*)
-  - <a href="src/main/java/com/kiuwan/client/examples/GetViolatedRuleFiles.java">com.kiuwan.client.examples.GetViolatedRuleFiles.java</a> (*)
-  - <a href="src/main/java/com/kiuwan/client/examples/GetViolatedRuleFileDefects.java">com.kiuwan.client.examples.GetViolatedRuleFileDefects.java</a> (*)
-  - <a href="src/main/java/com/kiuwan/client/examples/GetViolatedRulesForApplication.java">com.kiuwan.client.examples.GetViolatedRulesForApplication.java</a> (*)
+  - <a href="src/main/java/com/kiuwan/client/examples/GetViolatedRules.java">com.kiuwan.client.examples.GetViolatedRules.java</a> 
+  - <a href="src/main/java/com/kiuwan/client/examples/GetViolatedRuleFiles.java">com.kiuwan.client.examples.GetViolatedRuleFiles.java</a> 
+  - <a href="src/main/java/com/kiuwan/client/examples/GetViolatedRuleFileDefects.java">com.kiuwan.client.examples.GetViolatedRuleFileDefects.java</a> 
+  - <a href="src/main/java/com/kiuwan/client/examples/GetViolatedRulesForApplication.java">com.kiuwan.client.examples.GetViolatedRulesForApplication.java</a> 
   - <a href="src/main/java/com/kiuwan/client/examples/CreateApplications.java">com.kiuwan.client.examples.CreateApplications.java</a> 
   - <a href="src/main/java/com/kiuwan/client/examples/CreateUsers.java">com.kiuwan.client.examples.CreateUsers.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/CreateUserGroups.java">com.kiuwan.client.examples.CreateUserGroups.java</a>
