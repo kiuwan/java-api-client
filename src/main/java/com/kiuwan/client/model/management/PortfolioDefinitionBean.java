@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class PortfolioDefinitionBean {
 
 	private String name;
+	private String description;
 	private Collection<String> values;
 	private Boolean isSystemPortfolio;
 	
@@ -28,6 +29,14 @@ public class PortfolioDefinitionBean {
 		this.name = name;
 	}
 	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public Collection<String> getValues() {
 		return values;
 	}
@@ -46,7 +55,7 @@ public class PortfolioDefinitionBean {
 	
 	@Override
 	public String toString() {
-		return "Portfolio Definition [name=" + name + ", values=" + values + ", Is System Portfolio=" + isSystemPortfolio + "]";
+		return "Portfolio Definition [name=" + name + ", values=" + values + ", Is System Portfolio=" + isSystemPortfolio + ", description=" + description + "]";
 	}
 	
 }

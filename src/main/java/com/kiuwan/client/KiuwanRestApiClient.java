@@ -4,6 +4,7 @@ import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -680,6 +681,26 @@ public class KiuwanRestApiClient {
 		return actionPlans;
 	}
 
+	public String savePortfolioDefinitions(Collection<PortfolioDefinitionBean> portfolioDefinitionBeans) throws KiuwanClientException{
+		String path = "/portfolios";
+		
+		StringBuilder results = new StringBuilder();
+		for (PortfolioDefinitionBean portfolioDefinitionBean : portfolioDefinitionBeans) {
+			Response response = post(path, portfolioDefinitionBean);
+			checkStatus(response, 200);
+
+			String resultMessage = "";
+			try {
+				resultMessage = response.readEntity(String.class);
+			} catch (Exception e) {
+				resultMessage = "ERROR: "+e.getMessage();
+			}
+			results.append(portfolioDefinitionBean.getName()+" -> "+resultMessage+"\n");
+		}
+		
+		return results.toString();
+	}
+	
 	public ActionPlanBean getActionPlan(String applicationName, String actionPlanName) throws KiuwanClientException{
 		return getActionPlan(applicationName, actionPlanName, null);
 	}

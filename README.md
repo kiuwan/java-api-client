@@ -8,10 +8,10 @@ Maven configuration:
 	<dependency>
 		<groupId>com.kiuwan</groupId>
 		<artifactId>java-api-client</artifactId>
-		<version>0.1.3</version>
+		<version>0.1.4</version>
 	</dependency>
 		
-Supported actions are:
+Supported actions are: (new features are marked with *)
 
   - List action plans of an application.
   - List analyses of an application.
@@ -46,8 +46,9 @@ Supported actions are:
   - Modify applications' information.
   - Modify users' information.
   - Modify user groups' information.
+  - Save portfolio definitions into your account. (*)
   
-Source code includes examples that shows you how to execute each supported action.
+Source code includes examples that shows you how to execute each supported action. (new features are marked with *)
 
   - <a href="src/main/java/com/kiuwan/client/examples/ListActionPlans.java">com.kiuwan.client.examples.ListActionPlans.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/ListAnalyses.java">com.kiuwan.client.examples.ListAnalyses.java</a>
@@ -82,6 +83,8 @@ Source code includes examples that shows you how to execute each supported actio
   - <a href="src/main/java/com/kiuwan/client/examples/ModifyApplications.java">com.kiuwan.client.examples.ModifyApplications.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/ModifyUsers.java">com.kiuwan.client.examples.ModifyUsers.java</a>
   - <a href="src/main/java/com/kiuwan/client/examples/ModifyUserGroups.java">com.kiuwan.client.examples.ModifyUserGroups.java</a>
+  - <a href="src/main/java/com/kiuwan/client/examples/SavePortfolioDefinitions.java">com.kiuwan.client.examples.SavePortfolioDefinitions.java</a> (*)
+
 
 Example of use:
 
