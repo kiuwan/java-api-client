@@ -83,6 +83,18 @@ public class KiuwanRestApiClient {
 	public void activateLog() {
 		connection.register(new LoggingFilter());
 	}
+
+	public String getUserInfo() throws KiuwanClientException {
+		String path = "/info";
+
+		Response response = get(path);
+		checkStatus(response, 200);
+        try {
+        	return response.readEntity(String.class);
+        } catch (Exception e) {
+            throw new KiuwanClientException(e);
+        }
+	}
 	
 	public List<Application> getApplications() throws KiuwanClientException {
 		String path = "/apps/list";
