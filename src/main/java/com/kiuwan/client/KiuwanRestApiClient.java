@@ -50,16 +50,29 @@ public class KiuwanRestApiClient {
     
 	private static final String CSRF_TOKEN_HEADER = "X-CSRF-TOKEN";
 
+	private static final String SSO_DOMAIN_HEADER = "X-KW-CORPORATE-DOMAIN-ID";
+
 	private WebTarget connection;
 	
 	private String csrfToken;
+
+	private String ssoDomain;
 	
 	private Map<String, Cookie> cookies = new HashMap<String, Cookie>();
 	
     public KiuwanRestApiClient(String user, String password) {
 		initializeConnection(user, password, REST_API_BASE_URL);
 	}
-	
+	/*
+	* NOTE TO REVIEWER
+	* the "ideal" constructor would be  KiuwanRestApiClient(String user, String password, String ssoDomainID)
+	* or...some other type of auth object, or token, as at some point it will need to ne implemented as such...
+	* but as (string, string, string) it has been taken opted for this signature with a "dummy" boolean param 
+	*/
+	public KiuwanRestApiClient(String user, String password, boolean isSSO , String ssoDomainID) {
+		this(user, password);
+		this.ssoDomain = ssoDomainID;
+	}
 	public KiuwanRestApiClient(String user, String password, String restApiBaseUrl) {
 		initializeConnection(user, password, restApiBaseUrl);
 	}
@@ -1131,7 +1144,8 @@ public class KiuwanRestApiClient {
 	private Response get(String resource) {
         Builder request = connection.path(resource).request();
         setCookies(request);
-        setCsrfToken(request);
+		setCsrfToken(request);
+		setSsoSessionID(request);
         Response response = request.get(Response.class);
         saveCookies(response);
         saveCsrfToken(response);
@@ -1141,7 +1155,8 @@ public class KiuwanRestApiClient {
 	private Response delete(String resource) {
         Builder request = connection.path(resource).request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE);
         setCookies(request);
-        setCsrfToken(request);
+		setCsrfToken(request);
+		setSsoSessionID(request);
 		Response response = request.delete(Response.class);
         saveCookies(response);
         saveCsrfToken(response);
@@ -1151,7 +1166,8 @@ public class KiuwanRestApiClient {
 	private Response put(String resource, Object content) {
         Builder request = connection.path(resource).request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE);
         setCookies(request);
-        setCsrfToken(request);
+		setCsrfToken(request);
+		setSsoSessionID(request);
         Response response = request.put(Entity.entity(content, MediaType.APPLICATION_JSON_TYPE), Response.class);
         saveCookies(response);
         saveCsrfToken(response);
@@ -1161,7 +1177,8 @@ public class KiuwanRestApiClient {
 	private Response post(String resource, Object content) {
         Builder request = connection.path(resource).request(MediaType.APPLICATION_JSON_TYPE).accept(MediaType.APPLICATION_JSON_TYPE);
         setCookies(request);
-        setCsrfToken(request);
+		setCsrfToken(request);
+		setSsoSessionID(request);
         Response response = request.post(Entity.entity(content, MediaType.APPLICATION_JSON_TYPE), Response.class);
         saveCookies(response);
         saveCsrfToken(response);
@@ -1176,7 +1193,8 @@ public class KiuwanRestApiClient {
 		
         Builder request = path.request(MediaType.APPLICATION_JSON_TYPE);
         setCookies(request);
-        setCsrfToken(request);
+		setCsrfToken(request);
+		setSsoSessionID(request);
 		Response response = request.get(Response.class);
         saveCookies(response);
         saveCsrfToken(response);
@@ -1214,6 +1232,29 @@ public class KiuwanRestApiClient {
         int status = response.getStatus();
         if (status != checkStatus)
             throw KiuwanClientException.createResponseStatusException(status);
+	}
+
+	/**
+     * @param request where rhe ssoDomain header will be set into
+     */
+	public void setSsoSessionID( Builder request){
+		String ssoDomain = this.ssoDomain;
+		if( ssoDomain != null){
+			request.header(SSO_DOMAIN_HEADER, ssoDomain);
+		}
+	}
+
+ 	/**
+     * @return the ssoDomain 
+     */
+    public String getSsoDomain() {
+        return ssoDomain;
     }
 
+    /**
+     * @param domainID the ssoDomain to set
+     */
+    public void setSsoDomain(String domainID) {
+        this.ssoDomain = domainID;
+    }
 }
